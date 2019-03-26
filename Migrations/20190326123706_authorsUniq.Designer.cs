@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookstore.Migrations
 {
     [DbContext(typeof(BookstoreDbContext))]
-    [Migration("20190313121515_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190326123706_authorsUniq")]
+    partial class authorsUniq
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,10 @@ namespace Bookstore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorshipId");
+
+                    b.HasIndex("Name", "Surname")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL AND [Surname] IS NOT NULL");
 
                     b.ToTable("Authors");
                 });
@@ -195,7 +199,7 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Ttile");
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 

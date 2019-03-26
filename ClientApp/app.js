@@ -5,13 +5,18 @@ import store from './store'
 import { sync } from 'vuex-router-sync'
 import App from 'components/app-root'
 import { FontAwesomeIcon } from './icons'
+import Vuetify from 'vuetify'
+import { Configuration } from './Configuration'
+import 'vuetify/dist/vuetify.min.css'
 
-// Registration of global components
+
+Vue.use(Vuetify)
 Vue.component('icon', FontAwesomeIcon)
 
 Vue.prototype.$http = axios
-
+axios.defaults.baseURL = Configuration.ApiPath
 sync(store, router)
+
 
 const app = new Vue({
   store,

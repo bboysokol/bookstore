@@ -14,6 +14,6 @@ namespace Bookstore.Models
         public string PublishmentYear { get; set; }
         public float Price { get; set; }
         public AuthorshipVM Authorship { get; set; }
-        public ICollection<CategoryVM> Category { get; set; }
+        public ICollection<Category> Category { get; set; }
     }
 }

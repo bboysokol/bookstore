@@ -65,6 +65,11 @@ namespace Bookstore
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
         }
     }
 }

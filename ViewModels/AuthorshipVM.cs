@@ -11,6 +11,6 @@ namespace Bookstore.Models
     {
         [Key]
         public int Id { get; set; }
-        public ICollection<AuthorVM> Authors { get; set; }
+        public ICollection<Author> Authors { get; set; }
     }
 }
