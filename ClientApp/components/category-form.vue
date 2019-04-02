@@ -7,30 +7,20 @@
              transition="scale-transition">
       "Username or password is incorrect"
     </v-alert>
-    <v-label>Add new author</v-label><br />
-    <v-text-field v-model="name"
-                  :rules="nameRules"
-                  label="Name"
+    <v-label>Add new category</v-label><br />
+    <v-text-field v-model="title"
+                  :rules="titleRules"
+                  label="Title"
                   required
                   color="#12d483"
                   prepend-inner-icon="person"
                   outline
                   >
     </v-text-field>
-    <v-text-field v-model="surname"
-                  :rules="nameRules"
-                  label="Surname"
-                  required
-                  outline
-                  color="#12d483"
-                  prepend-inner-icon="person"
-                  @keyup.enter="submit">
-    </v-text-field>
-
     <v-btn @click="submit"
            color="#12d483"
            outline
-           round>Add Author</v-btn><br />
+           round>Add Category</v-btn><br />
   </v-form>
 </template>
 
@@ -41,19 +31,17 @@
     data: () => ({
       valid: true,
       alert: false,
-      name: '',
-      nameRules: [
-        v => !!v || 'Name and Surname is required'
+      title: '',
+      titleRules: [
+        v => !!v || 'Title is required'
       ],
-      surname: '',
     }),
     methods: {
       submit() {
         var that = this;
         if (this.$refs.form.validate()) {
-          axios.post('authors/AddAuthor', {
-            Name: this.name,
-            Surname: this.surname
+          axios.post('categories/add', {
+            NewTitle: this.title
           }).then(function (response) {
             if (response.data.successful) {
               console.log(response.data);

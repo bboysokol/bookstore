@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Bookstore.Models;
+using Bookstore.Services;
+using Bookstore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,7 @@ namespace Bookstore.Controllers
         }
         //[Route("Register")]
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<IActionResult> Register([FromBody]RegisterRequest registerRequest)
         {
             try
             {
@@ -80,11 +82,25 @@ namespace Bookstore.Controllers
                     return Failure();
                 }
 
-                var user = _userService.Authenticate(loginRequest.UserName);
-                if (user == null)
+                var client = _userService.Authenticate(loginRequest.UserName);
+                if (client == null)
                 {
                     return BadRequest("User doesn't exist");
                 }
+                var user = new ClientVM()
+                {
+                    Id = client.Id,
+                    Email = client.Email,
+                    Name = client.Name,
+                    Surname = client.Surname,
+                    City = client.City,
+                    Street = client.Street,
+                    HouseNumber = client.HouseNumber,
+                    ApartamentNumber = client.ApartamentNumber,
+                    IsDeleted = client.IsDeleted,
+                    Token = client.Token,
+                    Role = client.Role
+                };
                 return Success(user);
             }
             catch (Exception ex)

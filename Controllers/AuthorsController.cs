@@ -33,7 +33,12 @@ namespace Bookstore.Controllers
         {
             try
             {
-                var authors = await _context.Authors.ToListAsync();
+                var authors = await _context.Authors
+                    .Select(row => new AuthorVM()
+                    {
+                        Id = row.Id,
+                        Name = row.Name+ " " + row.Surname
+                    }).ToListAsync();
                 return Success(authors);
             }
             catch (Exception ex)

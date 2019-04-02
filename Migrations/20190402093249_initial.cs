@@ -41,15 +41,15 @@ namespace Bookstore.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Street = table.Column<string>(nullable: true),
-                    HouseNumber = table.Column<string>(nullable: true),
-                    ApartamentNumber = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
+                    City = table.Column<string>(nullable: false),
+                    Street = table.Column<string>(nullable: false),
+                    HouseNumber = table.Column<string>(nullable: false),
+                    ApartamentNumber = table.Column<string>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Token = table.Column<string>(nullable: true),
-                    Role = table.Column<string>(nullable: true)
+                    Role = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace Bookstore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,8 +206,8 @@ namespace Bookstore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
                     AuthorshipId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -227,11 +227,11 @@ namespace Bookstore.Migrations
                 {
                     ISBN = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
-                    PublishingHouseId = table.Column<int>(nullable: true),
-                    PublishmentYear = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
+                    PublishingHouseId = table.Column<int>(nullable: false),
+                    PublishmentYear = table.Column<string>(nullable: false),
                     Price = table.Column<float>(nullable: false),
-                    AuthorshipId = table.Column<int>(nullable: true),
+                    AuthorshipId = table.Column<int>(nullable: false),
                     ShoppingCartId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -242,13 +242,13 @@ namespace Bookstore.Migrations
                         column: x => x.AuthorshipId,
                         principalTable: "Authorships",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Books_PublishingHouses_PublishingHouseId",
                         column: x => x.PublishingHouseId,
                         principalTable: "PublishingHouses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Books_ShopingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
@@ -263,7 +263,7 @@ namespace Bookstore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClientId = table.Column<string>(nullable: true),
+                    ClientId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     ShoppingCartId = table.Column<int>(nullable: false)
@@ -276,7 +276,7 @@ namespace Bookstore.Migrations
                         column: x => x.ClientId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_ShopingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
@@ -350,6 +350,12 @@ namespace Bookstore.Migrations
                 column: "AuthorshipId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Authors_Name_Surname",
+                table: "Authors",
+                columns: new[] { "Name", "Surname" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorshipId",
                 table: "Books",
                 column: "AuthorshipId");
@@ -368,6 +374,13 @@ namespace Bookstore.Migrations
                 name: "IX_Categories_BookISBN",
                 table: "Categories",
                 column: "BookISBN");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Title",
+                table: "Categories",
+                column: "Title",
+                unique: true,
+                filter: "[Title] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ClientId",

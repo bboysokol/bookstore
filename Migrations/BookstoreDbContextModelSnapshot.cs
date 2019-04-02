@@ -27,17 +27,18 @@ namespace Bookstore.Migrations
 
                     b.Property<int?>("AuthorshipId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorshipId");
 
                     b.HasIndex("Name", "Surname")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL AND [Surname] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Authors");
                 });
@@ -59,17 +60,19 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorshipId");
+                    b.Property<int>("AuthorshipId");
 
                     b.Property<float>("Price");
 
-                    b.Property<int?>("PublishingHouseId");
+                    b.Property<int>("PublishingHouseId");
 
-                    b.Property<string>("PublishmentYear");
+                    b.Property<string>("PublishmentYear")
+                        .IsRequired();
 
                     b.Property<int?>("ShoppingCartId");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("ISBN");
 
@@ -96,6 +99,10 @@ namespace Bookstore.Migrations
 
                     b.HasIndex("BookISBN");
 
+                    b.HasIndex("Title")
+                        .IsUnique()
+                        .HasFilter("[Title] IS NOT NULL");
+
                     b.ToTable("Categories");
                 });
 
@@ -106,9 +113,11 @@ namespace Bookstore.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("ApartamentNumber");
+                    b.Property<string>("ApartamentNumber")
+                        .IsRequired();
 
-                    b.Property<string>("City");
+                    b.Property<string>("City")
+                        .IsRequired();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -118,7 +127,8 @@ namespace Bookstore.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("HouseNumber");
+                    b.Property<string>("HouseNumber")
+                        .IsRequired();
 
                     b.Property<bool>("IsDeleted");
 
@@ -126,7 +136,8 @@ namespace Bookstore.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -140,13 +151,16 @@ namespace Bookstore.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("Role");
+                    b.Property<string>("Role")
+                        .IsRequired();
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<string>("Street");
+                    b.Property<string>("Street")
+                        .IsRequired();
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired();
 
                     b.Property<string>("Token");
 
@@ -174,7 +188,8 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClientId");
+                    b.Property<string>("ClientId")
+                        .IsRequired();
 
                     b.Property<DateTime>("Date");
 
@@ -197,7 +212,8 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -338,11 +354,13 @@ namespace Bookstore.Migrations
                 {
                     b.HasOne("Bookstore.Models.Authorship", "Authorship")
                         .WithMany()
-                        .HasForeignKey("AuthorshipId");
+                        .HasForeignKey("AuthorshipId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Bookstore.Models.PublishingHouse", "PublishingHouse")
                         .WithMany()
-                        .HasForeignKey("PublishingHouseId");
+                        .HasForeignKey("PublishingHouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Bookstore.Models.ShoppingCart")
                         .WithMany("Books")
@@ -359,8 +377,9 @@ namespace Bookstore.Migrations
             modelBuilder.Entity("Bookstore.Models.Order", b =>
                 {
                     b.HasOne("Bookstore.Models.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId");
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Bookstore.Models.ShoppingCart", "ShoppingCart")
                         .WithMany()

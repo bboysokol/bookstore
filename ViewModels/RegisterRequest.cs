@@ -1,16 +1,18 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bookstore.Models
+namespace Bookstore.ViewModels
 {
-    public class PublishingHouse
+    public class RegisterRequest : LoginRequest
     {
-        [Key]
-        public int Id { get; set; }
+
         [Required]
-        public string Title { get; set; }
+        public string ConfirmedPassword { get; set; }
+
+        
     }
 }

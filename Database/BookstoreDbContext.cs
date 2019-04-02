@@ -29,8 +29,22 @@ namespace Bookstore.Database
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
+                .Entity<Order>()
+                .HasOne(i => i.Client)
+                .WithMany(i => i.Orders)
+                .HasForeignKey(i => i.ClientId);
+
+            modelBuilder
                .Entity<Author>()
                .HasIndex(p => new { p.Name, p.Surname }).IsUnique();
+
+            modelBuilder
+               .Entity<Category>()
+               .HasIndex(p => new { p.Title }).IsUnique();
+
+            modelBuilder
+               .Entity<PublishingHouse>()
+               .HasIndex(p => new { p.Title }).IsUnique();
 
         }
     }

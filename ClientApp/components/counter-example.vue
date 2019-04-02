@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div>
         <h1>Counter</h1>
 
@@ -54,5 +54,5 @@
     }
 </script>
 
-<style>
+<style scoped>
 </style>

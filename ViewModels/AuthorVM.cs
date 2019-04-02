@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bookstore.Models
 {
-    public class CategoryVM
+    public class AuthorVM
     {
         [Key]
         public int Id { get; set; }
-        public string Title { get; set; }
+        [Required]
+        public string Name { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using Bookstore.Database;
+using Bookstore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,8 @@ namespace Bookstore
 
             services.AddDbContext<BookstoreDbContext>(
               options => options.UseSqlServer(Configuration.GetConnectionString("Bookstore")));
+
+            services.AddScoped<IUserService, UserService>();
 
             services.AddIdentity<Models.Client, IdentityRole>()
                 .AddEntityFrameworkStores<BookstoreDbContext>();

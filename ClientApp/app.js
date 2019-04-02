@@ -7,8 +7,13 @@ import App from 'components/app-root'
 import { FontAwesomeIcon } from './icons'
 import Vuetify from 'vuetify'
 import { Configuration } from './Configuration'
+import VueCookies from 'vue-cookies'
 import 'vuetify/dist/vuetify.min.css'
 
+Vue.use(VueCookies)
+VueCookies.config('1d')
+VueCookies.set('theme', 'default');
+VueCookies.set('hover-time', '1s');
 
 Vue.use(Vuetify)
 Vue.component('icon', FontAwesomeIcon)
