@@ -69,6 +69,7 @@
       password: '',
       model: null,
       model2: null,
+
       passRules: [
         v => !!v || 'Password is required'
       ],
