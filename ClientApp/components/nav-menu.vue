@@ -1,56 +1,132 @@
-﻿<template>
-    <div class="main-nav">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" @click="toggleCollapsed">
-                <span class="navbar-toggler-icon"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <router-link class="navbar-brand" to="/"><icon :icon="['fab', 'microsoft']"/> ASP.NET Core with Vue.js 2</router-link>
-
-            <transition name="slide">
-                <div :class="'collapse navbar-collapse' + (!collapsed ? ' show':'')" v-show="!collapsed">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item" v-for="(route, index) in routes" :key="index">
-                            <router-link :to="route.path" exact-active-class="active">
-                                <icon :icon="route.icon" class="mr-2" /><span>{{ route.display }}</span> 
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-            </transition>
-        </nav>
-    </div>
+<template>
+  <div>
+    <v-toolbar dark app>
+      <v-toolbar-items v-for="(route, index) in visibleRoutes" :key="index">
+        <v-btn flat
+               :to="route.path"
+               active-class="active">
+          <span>{{route.display}}</span>
+        </v-btn>
+      </v-toolbar-items>
+      <v-spacer />
+      <search-bar style="margin-top:0px;" />
+      <v-spacer />
+      
+        <v-btn icon>
+          <v-badge bottom
+                   overlap
+                   color="#12d483">
+            <span slot="badge">
+              2
+            </span>
+            <v-icon>shopping_cart</v-icon>
+          </v-badge>
+        </v-btn>
+      <v-menu bottom
+              left
+              transition="slide-y-reverse-transition"
+              >
+        <v-btn icon
+               large
+               slot="activator">
+          <v-icon>menu</v-icon>
+        </v-btn>
+        <v-list dark>
+          <v-list-tile v-for="(item, title) in items"
+                       class="tile"
+                       :key="title"
+                       @click="handle_function_call(item.method)">
+            <router-link :to="item.path">{{ item.title }}</router-link>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
+  </div>
 </template>
-
 <script>
-    import { routes } from '../router/routes'
+  import { routes } from '../router/routes'
+  import axios from 'axios'
+  import Searchbar from './searchbar'
+  import router from '../router/index'
 
-    export default {
-      data () {
-        return {
-          routes,
-          collapsed: true
-        }
-      },
-      methods: {
-        toggleCollapsed: function (event) {
-          this.collapsed = !this.collapsed
-        }
+  export default {
+    components: {
+      'search-bar': Searchbar
+    },
+    data() {
+      return {
+        routes,
+        userState: false,
+        collapsed: true,
+        items: [
+          { title: "Your account", path: "/user/" + this.userId, method: "" },
+          { title: "Find user", path: "/search", method: "" },
+          { title: "Logout", path: "", method: "logout" },
+        ]
       }
+    },
+    watch: {
+      newNotification: function (newVal, oldVal) {
+        this.showNotifications();
+      }
+    },
+    computed: {
+      visibleRoutes: function () {
+        return this.routes.filter(item => { return item.visible });
+      },
+    },
+    created: function () {
+      var that = this;
+      if (this.$cookies.get('IsLoggedCookie')) {
+        axios.defaults.headers = { 'Authorization': `Bearer ${$cookies.get('IsLoggedCookie').token}` }
+        that.userState = true;
+        that.userId = $cookies.get('IsLoggedCookie').id;
+        axios.get('notifications/getnotifications/' + $cookies.get('IsLoggedCookie').id)
+          .then(function (data) {
+            that.notifications = data.data.payload.reverse();
+            console.log(data.data.payload);
+          })
+      }
+    },
+    methods: {
+      toggleCollapsed: function (event) {
+        this.collapsed = !this.collapsed
+      },
+      handle_function_call(function_name) {
+        if (function_name)
+          this[function_name]()
+      },
+      logout() {
+        axios.post('authentication/logout')
+          .then(function (response) {
+            console.log(response)
+          });
+        $cookies.remove('IsLoggedCookie');
+        this.$emit('successLogout');
+        router.push('/login')
+      },
     }
+  }
 </script>
 
 <style scoped>
-    .slide-enter-active, .slide-leave-active {
-    transition: max-height .35s
-    }
-    .slide-enter, .slide-leave-to {
-    max-height: 0px;
-    }
+  a, a:hover {
+    text-decoration: none !important;
+    color: white;
+  }
 
-    .slide-enter-to, .slide-leave {
-    max-height: 20em;
-    }
+  .v-btn {
+    font-size: 18px;
+  }
+
+  .active {
+    text-decoration: none;
+    border-bottom: 4px solid;
+    border-color: #12d483;
+  }
+
+  .v-toolbar__side-icon {
+    width: 40px;
+    display: none;
+  }
 </style>

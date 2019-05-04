@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bookstore.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,18 +54,6 @@ namespace Bookstore.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Authorships",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authorships", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -201,27 +189,6 @@ namespace Bookstore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    Surname = table.Column<string>(nullable: false),
-                    AuthorshipId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Authors_Authorships_AuthorshipId",
-                        column: x => x.AuthorshipId,
-                        principalTable: "Authorships",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
@@ -231,18 +198,11 @@ namespace Bookstore.Migrations
                     PublishingHouseId = table.Column<int>(nullable: false),
                     PublishmentYear = table.Column<string>(nullable: false),
                     Price = table.Column<float>(nullable: false),
-                    AuthorshipId = table.Column<int>(nullable: false),
                     ShoppingCartId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Books", x => x.ISBN);
-                    table.ForeignKey(
-                        name: "FK_Books_Authorships_AuthorshipId",
-                        column: x => x.AuthorshipId,
-                        principalTable: "Authorships",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Books_PublishingHouses_PublishingHouseId",
                         column: x => x.PublishingHouseId,
@@ -286,12 +246,33 @@ namespace Bookstore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
+                    BookISBN = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Authors_Books_BookISBN",
+                        column: x => x.BookISBN,
+                        principalTable: "Books",
+                        principalColumn: "ISBN",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     BookISBN = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -345,20 +326,15 @@ namespace Bookstore.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Authors_AuthorshipId",
+                name: "IX_Authors_BookISBN",
                 table: "Authors",
-                column: "AuthorshipId");
+                column: "BookISBN");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Authors_Name_Surname",
                 table: "Authors",
                 columns: new[] { "Name", "Surname" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorshipId",
-                table: "Books",
-                column: "AuthorshipId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_PublishingHouseId",
@@ -379,8 +355,7 @@ namespace Bookstore.Migrations
                 name: "IX_Categories_Title",
                 table: "Categories",
                 column: "Title",
-                unique: true,
-                filter: "[Title] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ClientId",
@@ -391,6 +366,12 @@ namespace Bookstore.Migrations
                 name: "IX_Orders_ShoppingCartId",
                 table: "Orders",
                 column: "ShoppingCartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishingHouses_Title",
+                table: "PublishingHouses",
+                column: "Title",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -427,9 +408,6 @@ namespace Bookstore.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Authorships");
 
             migrationBuilder.DropTable(
                 name: "PublishingHouses");

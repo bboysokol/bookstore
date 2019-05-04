@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.Diagrams" Version="0.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
@@ -14,7 +15,6 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ClientApp\containers\" />
     <Folder Include="Migrations\" />
     <Folder Include="Providers\" />
   </ItemGroup>

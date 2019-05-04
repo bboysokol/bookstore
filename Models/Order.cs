@@ -15,7 +15,7 @@ namespace Bookstore.Models
         public string ClientId { get; set; }
         [Required]
         [ForeignKey("ClientId")]
-        public virtual Client Client { get; set; }
+        public Client Client { get; set; }
         [Required]
         public DateTime Date { get; set; }
         [Required]
@@ -24,7 +24,7 @@ namespace Bookstore.Models
         public int ShoppingCartId { get; set; }
         [Required]
         [ForeignKey("ShoppingCartId")]
-        public virtual ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
 
     }
 }

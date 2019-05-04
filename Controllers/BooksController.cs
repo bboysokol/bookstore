@@ -38,14 +38,9 @@ namespace Bookstore.Controllers
                 {
                     ISBN = row.ISBN,
                     Title = row.Title,
-                   // PublishingHouse = new PublishingHouseVM() { Id = row.PublishingHouse.Id, Title = row.PublishingHouse.Title },
+                    PublishingHouse = new PublishingHouseVM() { Id = row.PublishingHouse.Id, Title = row.PublishingHouse.Title },
                     PublishmentYear = row.PublishmentYear,
-                    //Authorship = new AuthorshipVM()
-                    //{
-                    //    Id = row.Authorship.Id,
-                    //    Authors = row.Authorship.Authors,
-                    //},
-                    //Category = row.Category
+                    Category = row.Category
                 }).ToListAsync();
 
             return Success(books);
@@ -61,6 +56,24 @@ namespace Bookstore.Controllers
             }
 
             var book = await _context.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
+        }
+
+        [HttpGet("{category}")]
+        public async Task<IActionResult> GetBooksByCategory([FromRoute] string category)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var book = await _context.Books.FindAsync(category);
 
             if (book == null)
             {
@@ -107,7 +120,7 @@ namespace Bookstore.Controllers
 
         // POST: api/Books
         [HttpPost]
-        public async Task<IActionResult> PostBook([FromBody] Book book)
+        public async Task<IActionResult> AddBook([FromBody]Book book)
         {
             if (!ModelState.IsValid)
             {

@@ -8,17 +8,17 @@
                transition="scale-transition">
         "Username or password is incorrect"
       </v-alert>
-      <v-label><h2 class="logo">Bookstore</h2> </v-label><br />
-      <v-text-field v-model="username"
-                    :rules="userRules"
-                    label="Username"
+      <v-label><h2 class="logo">Add a book</h2> </v-label><br />
+      <v-text-field v-model="title"
+                    :rules="textRules"
+                    label="Title"
                     required
                     color="#12d483"
-                    prepend-inner-icon="person"
+                    prepend-inner-icon="title"
                     outline>
       </v-text-field>
 
-      <v-autocomplete v-model="model"
+      <v-autocomplete v-model="author"
                       :items="authors"
                       item-text="name"
                       item-value="id"
@@ -27,7 +27,7 @@
                       prepend-inner-icon="person">
       </v-autocomplete>
 
-      <v-autocomplete v-model="model2"
+      <v-autocomplete v-model="category"
                       :items="categories"
                       item-text="title"
                       item-value="id"
@@ -36,7 +36,7 @@
                       prepend-inner-icon="book">
       </v-autocomplete>
 
-      <v-text-field v-model="password"
+      <!--<v-text-field v-model="password"
                     type="password"
                     :rules="passRules"
                     label="Password"
@@ -45,20 +45,18 @@
                     color="#12d483"
                     prepend-inner-icon="lock"
                     @keyup.enter="submit">
-      </v-text-field>
+      </v-text-field>-->
       <v-btn @click="submit"
              color="#12d483"
              outline
              class="modal-button"
-             round>Sign In</v-btn><br />
-      <register-form></register-form>
+             round>Submit</v-btn>
     </v-form>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
-  import RegisterForm from './register-form'
 
   export default {
     data: () => ({
@@ -66,20 +64,15 @@
       alert: false,
       authors: [],
       categories: [],
-      password: '',
-      model: null,
-      model2: null,
-
-      passRules: [
-        v => !!v || 'Password is required'
+      title: null,
+      author: null,
+      category: null,
+      textRules: [
+        v => !!v || 'Text is required'
       ],
-      username: '',
-      userRules: [
-        v => !!v || 'Username is required'
-      ]
     }),
     components: {
-      'register-form': RegisterForm
+
     },
     created: function () {
       var that = this;
@@ -97,17 +90,17 @@
       submit() {
         var that = this;
         if (this.$refs.form.validate()) {
-          axios.post('authentication/logIn', {
-            username: this.username,
-            password: this.password
+          axios.post('books/AddBook', {
+            title: this.title,
+            category: this.category,
+            authors: this.authors,
+            publishmentYear: this.publishmentYear,
+            price: this.price,
+
           }).then(function (response) {
             if (response.data.payload) {
               console.log(response);
               that.user = response.data.payload;
-              $cookies.set('IsLoggedCookie', that.user)
-              axios.defaults.headers = { 'Authorization': `Bearer ${that.user}` }
-              that.$emit('successLogin');
-              router.push('/')
             } else
               that.alert = true;
           });

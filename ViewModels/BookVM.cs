@@ -10,10 +10,10 @@ namespace Bookstore.Models
     {   [Key]
         public int ISBN { get; set; }
         public string Title { get; set; }
-        public PublishingHouseVM PublishingHouse { get; set; }
+        public virtual PublishingHouseVM PublishingHouse { get; set; }
         public string PublishmentYear { get; set; }
         public float Price { get; set; }
-        public AuthorshipVM Authorship { get; set; }
-        public ICollection<Category> Category { get; set; }
+        public virtual ICollection<Author> Authors { get; set; }
+        public virtual ICollection<Category> Category { get; set; }
     }
 }

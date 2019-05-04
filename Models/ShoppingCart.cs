@@ -11,7 +11,7 @@ namespace Bookstore.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
         [Required]
         public float TotalPrice { get; set; }
     }

@@ -4,11 +4,18 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet">
       <div class="row">
-        <div class="col-md-3">
           <nav-menu params="route: route"></nav-menu>
-        </div>
-        <div class="col-sm-9">
-          <router-view></router-view>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="row no-gutters">
+            <div class="col">
+              <side-nav></side-nav>
+            </div>
+            <div class="col-12 col-md-10">
+              <router-view></router-view>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -16,11 +23,13 @@
 </template>
 
 <script>
-    import NavMenu from './nav-menu'
+  import NavMenu from './nav-menu'
+  import SideNav from './side-nav'
 
     export default {
       components: {
-        'nav-menu': NavMenu
+        'nav-menu': NavMenu,
+        'side-nav': SideNav,
       },
 
       data () {
@@ -30,4 +39,7 @@
 </script>
 
 <style scoped>
+  .offset-md-2 {
+    margin-top: 78px;
+  }
 </style>

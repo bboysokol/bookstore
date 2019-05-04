@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookstore.Migrations
 {
     [DbContext(typeof(BookstoreDbContext))]
-    [Migration("20190402093249_initial")]
-    partial class initial
+    [Migration("20190504135322_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,7 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorshipId");
+                    b.Property<int?>("BookISBN");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -37,7 +37,7 @@ namespace Bookstore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorshipId");
+                    b.HasIndex("BookISBN");
 
                     b.HasIndex("Name", "Surname")
                         .IsUnique();
@@ -45,24 +45,11 @@ namespace Bookstore.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("Bookstore.Models.Authorship", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Authorships");
-                });
-
             modelBuilder.Entity("Bookstore.Models.Book", b =>
                 {
                     b.Property<int>("ISBN")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuthorshipId");
 
                     b.Property<float>("Price");
 
@@ -77,8 +64,6 @@ namespace Bookstore.Migrations
                         .IsRequired();
 
                     b.HasKey("ISBN");
-
-                    b.HasIndex("AuthorshipId");
 
                     b.HasIndex("PublishingHouseId");
 
@@ -95,15 +80,15 @@ namespace Bookstore.Migrations
 
                     b.Property<int?>("BookISBN");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookISBN");
 
                     b.HasIndex("Title")
-                        .IsUnique()
-                        .HasFilter("[Title] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Categories");
                 });
@@ -218,6 +203,9 @@ namespace Bookstore.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Title")
+                        .IsUnique();
 
                     b.ToTable("PublishingHouses");
                 });
@@ -347,18 +335,13 @@ namespace Bookstore.Migrations
 
             modelBuilder.Entity("Bookstore.Models.Author", b =>
                 {
-                    b.HasOne("Bookstore.Models.Authorship")
+                    b.HasOne("Bookstore.Models.Book")
                         .WithMany("Authors")
-                        .HasForeignKey("AuthorshipId");
+                        .HasForeignKey("BookISBN");
                 });
 
             modelBuilder.Entity("Bookstore.Models.Book", b =>
                 {
-                    b.HasOne("Bookstore.Models.Authorship", "Authorship")
-                        .WithMany()
-                        .HasForeignKey("AuthorshipId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Bookstore.Models.PublishingHouse", "PublishingHouse")
                         .WithMany()
                         .HasForeignKey("PublishingHouseId")

@@ -18,7 +18,7 @@ namespace Bookstore.Models
         [Required]
         public float Price { get; set; }
         [Required]
-        public Authorship Authorship { get; set; }
+        public ICollection<Author> Authors { get; set; }
         [Required]
         public ICollection<Category> Category { get; set; }
     }
