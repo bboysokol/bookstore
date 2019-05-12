@@ -99,7 +99,6 @@ namespace Bookstore.Controllers
                     ApartamentNumber = client.ApartamentNumber,
                     IsDeleted = client.IsDeleted,
                     Token = client.Token,
-                    Role = client.Role
                 };
                 return Success(user);
             }

@@ -5,4 +5,9 @@ function getBooksByCategories() {
     .then(response => { return response.data.payload })
 }
 
-export { getBooksByCategories };
+function getBooks() {
+  return axios.get('books/GetBooks')
+    .then(response => { return response.data.payload })
+}
+
+export { getBooksByCategories, getBooks };

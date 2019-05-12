@@ -16,10 +16,12 @@ namespace Bookstore.Models
         [Required]
         public string PublishmentYear { get; set; }
         [Required]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
         [Required]
-        public ICollection<Author> Authors { get; set; }
+        public ICollection<BookAuthor> BookAuthors { get; set; }
         [Required]
-        public ICollection<Category> Category { get; set; }
+        public Category Category { get; set; }
+        public string Img { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

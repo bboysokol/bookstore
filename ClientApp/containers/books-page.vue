@@ -8,7 +8,7 @@
           <v-container fluid
                        grid-list-lg>
             <v-layout row wrap>
-              <v-flex xs12 md6>
+              <v-flex xs12 md6 v-for="book in books" :key="book.isbn">
                 <v-card color="cyan darken-2" class="white--text">
                   <v-layout>
                     <v-flex xs5>
@@ -19,22 +19,18 @@
                     <v-flex xs7>
                       <v-card-title primary-title>
                         <div>
-                          <div class="headline">Supermodel</div>
-                          <div>Foster the People</div>
-                          <div>(2014)</div>
+                          <div class="headline">{{book.title}}</div>
+                          <div v-for="author in book.authors" :key="author.id">{{author.name +" "+author.surname}}</div>
+                          <div>{{book.publishingHouse.title}}({{ book.publishmentYear}})</div>
                         </div>
                       </v-card-title>
                     </v-flex>
                   </v-layout>
                   <v-divider light></v-divider>
                   <v-card-actions class="pa-3">
-                    Rate this album
+                    ${{book.price}}
                     <v-spacer></v-spacer>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
-                    <v-icon>star_border</v-icon>
+                    <v-btn>Add</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -46,16 +42,22 @@
   </div>
 </template>
 <script>
+  import { getBooks } from '../services/books'
   export default {
     data() {
       return {
-      title:""}
+        title: "",
+        books: [],
+      }
     },
     components: {
       
     },
     created: function () {
       this.title = this.$route.params.category.toUpperCase();
+      getBooks().then(value => this.books = value);
+      console.log(this.books);
+      
     }
   }
 </script>

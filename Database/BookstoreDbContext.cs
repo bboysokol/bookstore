@@ -21,10 +21,26 @@ namespace Bookstore.Database
         public DbSet<Order> Orders { get; set; }
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
         public DbSet<ShoppingCart> ShopingCarts { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<BookAuthor>()
+                .HasKey(i => new { i.BookId, i.AuthorId });
+
+            modelBuilder.Entity<BookAuthor>()
+                .HasOne(bc => bc.Book)
+                .WithMany(b => b.BookAuthors)
+                .HasForeignKey(bc => bc.BookId);
+
+            modelBuilder.Entity<BookAuthor>()
+                .HasOne(bc => bc.Author)
+                .WithMany(c => c.BookAuthors)
+                .HasForeignKey(bc => bc.AuthorId);
+
 
             modelBuilder
                 .Entity<Order>()

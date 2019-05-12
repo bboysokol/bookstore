@@ -25,8 +25,6 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookISBN");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -34,8 +32,6 @@ namespace Bookstore.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookISBN");
 
                     b.HasIndex("Name", "Surname")
                         .IsUnique();
@@ -49,7 +45,13 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Price");
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Img");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<decimal>("Price");
 
                     b.Property<int>("PublishingHouseId");
 
@@ -63,11 +65,26 @@ namespace Bookstore.Migrations
 
                     b.HasKey("ISBN");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("PublishingHouseId");
 
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("Bookstore.Models.BookAuthor", b =>
+                {
+                    b.Property<int>("BookId");
+
+                    b.Property<int>("AuthorId");
+
+                    b.HasKey("BookId", "AuthorId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("BookAuthors");
                 });
 
             modelBuilder.Entity("Bookstore.Models.Category", b =>
@@ -76,14 +93,10 @@ namespace Bookstore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookISBN");
-
                     b.Property<string>("Title")
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookISBN");
 
                     b.HasIndex("Title")
                         .IsUnique();
@@ -331,15 +344,13 @@ namespace Bookstore.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Bookstore.Models.Author", b =>
-                {
-                    b.HasOne("Bookstore.Models.Book")
-                        .WithMany("Authors")
-                        .HasForeignKey("BookISBN");
-                });
-
             modelBuilder.Entity("Bookstore.Models.Book", b =>
                 {
+                    b.HasOne("Bookstore.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Bookstore.Models.PublishingHouse", "PublishingHouse")
                         .WithMany()
                         .HasForeignKey("PublishingHouseId")
@@ -350,11 +361,17 @@ namespace Bookstore.Migrations
                         .HasForeignKey("ShoppingCartId");
                 });
 
-            modelBuilder.Entity("Bookstore.Models.Category", b =>
+            modelBuilder.Entity("Bookstore.Models.BookAuthor", b =>
                 {
-                    b.HasOne("Bookstore.Models.Book")
-                        .WithMany("Category")
-                        .HasForeignKey("BookISBN");
+                    b.HasOne("Bookstore.Models.Author", "Author")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Bookstore.Models.Book", "Book")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Bookstore.Models.Order", b =>

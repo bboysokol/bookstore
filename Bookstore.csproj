@@ -15,7 +15,6 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Providers\" />
   </ItemGroup>
 

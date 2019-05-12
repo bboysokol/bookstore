@@ -25,7 +25,7 @@ namespace Bookstore.Models
         public bool IsDeleted { get; set; } = false;
         public string Token { get; set; }
         [Required]
-        public string Role { get; set; }
+        public bool IsAdmin { get; set; } = false;
         public virtual ICollection<Order> Orders { get; set; }
     }
 }
