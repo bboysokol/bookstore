@@ -12,12 +12,12 @@ namespace Bookstore.Models
         public string Email { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string City { get; set; }
+        public string PostCode { get; set; }
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string ApartamentNumber { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
         public string Token { get; set; }
-        public string Role { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

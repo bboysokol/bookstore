@@ -3,7 +3,7 @@
             dark
             v-model="dialog">
     <v-btn slot="activator"
-           color="#12d483"
+           color="#FFB300"
            class="modal-button"
            outline
            round>
@@ -12,9 +12,10 @@
     <v-card class="dialog">
       <v-form ref="form" v-model="valid" lazy-validation>
 
-        <v-card-title class="headline green accent-3"
+        <v-card-title class="headline amber darken-1"
                       primary-title>
-          Register your account on our website!
+          Register!
+          <v-spacer></v-spacer>
           <v-btn icon dark @click="dialog = false">
             <v-icon>close</v-icon>
           </v-btn>
@@ -29,7 +30,54 @@
                         label="Username"
                         :rules="userRules"
                         required
-                        color="#12d483"
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="name"
+                        label="Name"
+                        :rules="dataRules"
+                        required
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="surname"
+                        label="Surname"
+                        :rules="dataRules"
+                        required
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="postcode"
+                        label="Postcode"
+                        :rules="dataRules"
+                        required
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="street"
+                        label="Street"
+                        :rules="dataRules"
+                        required
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="housenumber"
+                        label="House number"
+                        :rules="dataRules"
+                        required
+                        color="#FFB300"
+                        outline
+                        prepend-inner-icon="person">
+          </v-text-field>
+          <v-text-field v-model="apartamentnumber"
+                        label="Apartament number"
+                        required
+                        color="#FFB300"
                         outline
                         prepend-inner-icon="person">
           </v-text-field>
@@ -37,7 +85,7 @@
                         :rules="emailRules"
                         label="E-mail"
                         required
-                        color="#12d483"
+                        color="#FFB300"
                         outline
                         prepend-inner-icon="email">
           </v-text-field>
@@ -46,7 +94,7 @@
                         type="password"
                         label="Password"
                         required
-                        color="#12d483"
+                        color="#FFB300"
                         outline
                         prepend-inner-icon="lock"
                         hint="At least 6 characters, 1 lowercase, 1 uppercase, 1 number and 1 special character">
@@ -54,14 +102,15 @@
           <v-text-field v-model="ConfirmedPassword"
                         :rules="passRules"
                         type="password"
+                        @keyup.enter="submit"
                         label="Confirm password"
                         required
-                        color="#12d483"
+                        color="#FFB300"
                         outline
                         prepend-inner-icon="lock">
           </v-text-field>
-          <div style="padding-top:20px;">
-            <v-btn @click="submit" color="#12d483"
+          <div>
+            <v-btn @click="submit" color="#FFB300"
                    round
                    class="modal-button"
                    outline :disable="!valid">submit</v-btn>
@@ -85,6 +134,12 @@
       valid: true,
       dialog: false,
       username: '',
+      name: '',
+      surname: '',
+      postcode: '',
+      street: '',
+      housenumber: '',
+      apartamentnumber:'',
       alert: {
         state: false,
         type: "error",
@@ -96,6 +151,9 @@
       userRules: [
         v => !!v || 'Username is required',
         v => (v && v.length <= 10) || 'Username must be less than 10 characters',
+      ],
+      dataRules: [
+        v => !!v || 'This field is required',
       ],
       passRules: [
         v => !!v || 'Password is required',
@@ -118,7 +176,12 @@
             username: this.username,
             password: this.password,
             email: this.email,
-            AvatarUrl: this.avatarUrl,
+            name: this.name,
+            surname: this.surname,
+            postcode: this.postcode,
+            street: this.street,
+            housenumber: this.housenumber,
+            apartamentnumber: this.apartamentnumber,
             ConfirmedPassword: this.ConfirmedPassword
           }).then(function (response) {
             console.log(response.data);
@@ -142,15 +205,18 @@
 
 <style scoped>
   .dialog {
+    padding-top: 15px;
     background-color: rgba(0,0,0,0.9);
   }
 
   .dialog-card {
+    padding-top: 30px;
     display: grid;
     justify-items: center;
   }
 
-  .dialog-avatar {
-    width: 75%;
+  .v-text-field {
+    width: 100%;
+    max-width: 400px;
   }
 </style>

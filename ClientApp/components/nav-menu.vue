@@ -9,37 +9,49 @@
         </v-btn>
       </v-toolbar-items>
       <v-spacer />
-      <search-bar style="margin-top:0px;" />
+      <search-bar  style="margin-top:0px;" />
       <v-spacer />
-      
-        <v-btn icon>
-          <v-badge bottom
-                   overlap
-                   color="#12d483">
-            <span slot="badge">
-              2
-            </span>
-            <v-icon>shopping_cart</v-icon>
-          </v-badge>
-        </v-btn>
+      <v-btn icon>
+        <v-badge bottom
+                 overlap
+                 color="#12d483">
+          <span slot="badge">
+            2
+          </span>
+          <v-icon>shopping_cart</v-icon>
+        </v-badge>
+      </v-btn>
       <v-menu bottom
               left
-              transition="slide-y-reverse-transition"
-              >
+              class="hidden-md-and-up"
+              transition="slide-y-reverse-transition">
         <v-btn icon
                large
                slot="activator">
           <v-icon>menu</v-icon>
         </v-btn>
-        <v-list dark>
+        <v-list class="hidden-md-and-up" dark>
           <v-list-tile v-for="(item, title) in items"
                        class="tile"
                        :key="title"
-                       @click="handle_function_call(item.method)">
+                       @click="handle_function_call(item.method)"
+                       v-if="isLogged">
             <router-link :to="item.path">{{ item.title }}</router-link>
           </v-list-tile>
+          <login-modal v-if="!isLogged"></login-modal>
+          <register-modal v-if="!isLogged"></register-modal>
         </v-list>
       </v-menu>
+      <login-modal class="hidden-sm-and-down"
+                   v-if="!isLogged"></login-modal>
+      <register-modal class="hidden-sm-and-down"
+                      v-if="!isLogged"></register-modal>
+      <v-btn @click="logout"
+             color="#FFB300"
+             outline
+             class="modal-button hidden-sm-and-down"
+             round
+             v-if="isLogged">Logout</v-btn>
     </v-toolbar>
   </div>
 </template>
@@ -48,19 +60,22 @@
   import axios from 'axios'
   import Searchbar from './searchbar'
   import router from '../router/index'
+  import loginForm from './login-form'
+  import registerForm from './register-form'
 
   export default {
     components: {
-      'search-bar': Searchbar
+      'search-bar': Searchbar,
+      'register-modal': registerForm,
+      'login-modal': loginForm,
     },
     data() {
       return {
         routes,
-        userState: false,
+        isLogged: false,
         collapsed: true,
         items: [
           { title: "Your account", path: "/user/" + this.userId, method: "" },
-          { title: "Find user", path: "/search", method: "" },
           { title: "Logout", path: "", method: "logout" },
         ]
       }
@@ -77,15 +92,10 @@
     },
     created: function () {
       var that = this;
-      if (this.$cookies.get('IsLoggedCookie')) {
-        axios.defaults.headers = { 'Authorization': `Bearer ${$cookies.get('IsLoggedCookie').token}` }
-        that.userState = true;
-        that.userId = $cookies.get('IsLoggedCookie').id;
-        axios.get('notifications/getnotifications/' + $cookies.get('IsLoggedCookie').id)
-          .then(function (data) {
-            that.notifications = data.data.payload.reverse();
-            console.log(data.data.payload);
-          })
+      if (this.$cookies.get('UserCookie')) {
+        axios.defaults.headers = { 'Authorization': `Bearer ${$cookies.get('UserCookie').token}` }
+        that.isLogged = true;
+        that.userId = $cookies.get('UserCookie').id;
       }
     },
     methods: {
@@ -101,9 +111,9 @@
           .then(function (response) {
             console.log(response)
           });
-        $cookies.remove('IsLoggedCookie');
+        $cookies.remove('UserCookie');
         this.$emit('successLogout');
-        router.push('/login')
+        router.push('/')
       },
     }
   }

@@ -14,18 +14,17 @@ namespace Bookstore.Models
         [Required]
         public string Surname { get; set; }
         [Required]
-        public string City { get; set; }
+        public string PostCode { get; set; }
         [Required]
         public string Street { get; set; }
         [Required]
         public string HouseNumber { get; set; }
-        [Required]
         public string ApartamentNumber { get; set; }
         [Required]
         public bool IsDeleted { get; set; } = false;
         public string Token { get; set; }
         [Required]
         public bool IsAdmin { get; set; } = false;
-        public virtual ICollection<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

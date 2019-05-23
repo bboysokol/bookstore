@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <v-btn :to="'/addcategory'"
+    <v-btn :to="'/books/'+item.title"
                  v-for="item in categories"
-                  :key="item.id">
+                  :key="item.id"
+           class="category_btn">
       {{item.title}}
     </v-btn>
   </div>
@@ -22,4 +23,12 @@
   }
 </script>
 <style scoped>
+  .category_btn{
+    min-width:90%;
+  }
+  @media only screen and (max-width: 1269px){
+    .category_btn{
+      min-width:0;
+    }
+  }
 </style>

@@ -12,7 +12,7 @@
             <div class="col">
               <side-nav></side-nav>
             </div>
-            <div class="col-12 col-md-10">
+            <div class="col-12 col-lg-10">
               <router-view></router-view>
             </div>
           </div>

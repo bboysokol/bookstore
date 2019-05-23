@@ -41,6 +41,19 @@ namespace Bookstore.Database
                 .WithMany(c => c.BookAuthors)
                 .HasForeignKey(bc => bc.AuthorId);
 
+            modelBuilder
+                .Entity<ShoppingCart>()
+                .HasKey(i => new { i.ISBN, i.OrderId });
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(bc => bc.Book)
+                .WithMany(b => b.ShoppingCarts)
+                .HasForeignKey(bc => bc.ISBN);
+
+            modelBuilder.Entity<ShoppingCart>()
+                .HasOne(bc => bc.Order)
+                .WithMany(c => c.ShoppingCarts)
+                .HasForeignKey(bc => bc.OrderId);
 
             modelBuilder
                 .Entity<Order>()
@@ -59,6 +72,10 @@ namespace Bookstore.Database
             modelBuilder
                .Entity<PublishingHouse>()
                .HasIndex(p => new { p.Title }).IsUnique();
+
+            modelBuilder
+               .Entity<Book>()
+               .HasIndex(p => new { p.Title}).IsUnique();
 
         }
     }

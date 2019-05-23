@@ -8,11 +8,9 @@ namespace Bookstore.Models
 {
     public class ShoppingCart
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public virtual ICollection<Book> Books { get; set; }
-        [Required]
-        public float TotalPrice { get; set; }
+        public int ISBN { get; set; }
+        public Book Book { get; set; }
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
     }
 }

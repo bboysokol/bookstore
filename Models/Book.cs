@@ -17,8 +17,8 @@ namespace Bookstore.Models
         public string PublishmentYear { get; set; }
         [Required]
         public decimal Price { get; set; }
-        [Required]
         public ICollection<BookAuthor> BookAuthors { get; set; }
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
         [Required]
         public Category Category { get; set; }
         public string Img { get; set; }

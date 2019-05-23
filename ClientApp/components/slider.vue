@@ -14,21 +14,22 @@
 </template>
 
 <script>
+  import {Configuration} from '../Configuration'
   export default {
     data() {
       return {
         items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+            src: Configuration.ServerPath + '/img/slider/slider1.png'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+            src: Configuration.ServerPath + '/img/slider/slider2.png'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+            src: Configuration.ServerPath + '/img/slider/slider3.png'
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+            src: Configuration.ServerPath + '/img/slider/slider4.png'
           }
         ]
       }

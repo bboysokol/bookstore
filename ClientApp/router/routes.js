@@ -1,21 +1,23 @@
 import CounterExample from 'components/counter-example'
 import HomePage from '../containers/home-page'
-import AuthorForm from 'components/author-form'
+import Houses from 'components/houses'
 import Authors from 'components/authors'
-import Login from 'components/login-form'
-import Category from 'components/category-form'
-import PublishHouses from 'components/publishHouse-form'
-import BookForm from 'components/book-form'
+import Books from 'components/books'
+import Categories from 'components/categories'
 import BookPage from '../containers/books-page'
+import AdminPanel from '../containers/admin-page'
 
 export const routes = [
   { name: 'home', path: '/', component: HomePage, display: 'Bookstore', visible: true },
+  { name: 'phouses', path: '/publishinghouses', component: Houses, display: 'PHouses', visible: true },
+  { name: 'books', path: '/books', component: Books, display: 'Books', visible: true },
+  { name: 'categories', path: '/categories', component: Categories, display: 'Categories', visible: true },
   { name: 'counter', path: '/counter', component: CounterExample, display: 'Counter', icon: 'graduation-cap', visible: false },
-  { name: 'form', path: '/addauthor', component: AuthorForm, display: 'ASd', icon: 'graduation-cap', visible: false },
   { name: 'aithors', path: '/authors', component: Authors, display: 'Aasd', icon: 'graduation-cap', visible: false },
-  { name: 'login', path: '/login', component: Login, display: 'Login', icon: 'graduation-cap', visible: false },
-  { name: 'category', path: '/addcategory', component: Category, display: 'Cat', icon: 'graduation-cap', visible: false },
-  { name: 'phouses', path: '/addphouses', component: PublishHouses, display: 'asdfsd', icon: 'graduation-cap', visible: false },
-  { name: 'phousasdes', path: '/book', component: BookForm, display: 'asdfsd2', icon: 'graduation-cap', visible: false },
+  {
+    name: 'admin', path: '/admin', component: AdminPanel, display: 'Admin Panel', visible: false, meta: {
+      isAdmin: true
+    }
+  },
   { name: 'book-page', path: '/books/:category', component: BookPage, display: 'Book Page', visible: false },
 ]

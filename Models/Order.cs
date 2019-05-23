@@ -20,11 +20,7 @@ namespace Bookstore.Models
         public DateTime Date { get; set; }
         [Required]
         public bool Status { get; set; }
-        [Required]
-        public int ShoppingCartId { get; set; }
-        [Required]
-        [ForeignKey("ShoppingCartId")]
-        public ShoppingCart ShoppingCart { get; set; }
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
 
     }
 }

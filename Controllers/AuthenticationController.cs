@@ -44,8 +44,15 @@ namespace Bookstore.Controllers
 
                 var user = new Client()
                 {
+                    Name = registerRequest.Name,
+                    Surname= registerRequest.Surname,
                     Email = registerRequest.Email,
-                    UserName = registerRequest.UserName
+                    UserName = registerRequest.UserName,
+                    PostCode = registerRequest.PostCode,
+                    Street = registerRequest.Street,
+                    HouseNumber = registerRequest.HouseNumber,
+                    ApartamentNumber = registerRequest.ApartamentNumber,
+
                 };
 
                 var registerResult = await userManager.CreateAsync(user, registerRequest.Password);
@@ -93,12 +100,13 @@ namespace Bookstore.Controllers
                     Email = client.Email,
                     Name = client.Name,
                     Surname = client.Surname,
-                    City = client.City,
+                    PostCode = client.PostCode,
                     Street = client.Street,
                     HouseNumber = client.HouseNumber,
                     ApartamentNumber = client.ApartamentNumber,
                     IsDeleted = client.IsDeleted,
                     Token = client.Token,
+                    IsAdmin = client.IsAdmin
                 };
                 return Success(user);
             }

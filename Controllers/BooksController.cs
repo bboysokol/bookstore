@@ -9,6 +9,7 @@ using Bookstore.Database;
 using Bookstore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json.Linq;
 
 namespace Bookstore.Controllers
 {
@@ -120,15 +121,39 @@ namespace Bookstore.Controllers
 
         // POST: api/Books
         [HttpPost]
-        public async Task<IActionResult> AddBook([FromBody]Book book)
+        public async Task<IActionResult> AddBook([FromBody]JObject book)
         {
-            if (!BookExists(book.ISBN))
+
+            var category = await _context.Categories.Where(i => i.Id == book.GetValue("category").Value<int>()).FirstOrDefaultAsync();
+
+            var pubhouse = await _context.PublishingHouses.Where(i => i.Id == book.GetValue("publishinghouse").Value<int>()).FirstOrDefaultAsync();
+            var book2 = new Book()
             {
-                _context.Books.Add(book);
-                await _context.SaveChangesAsync();
-                return Success();
-            }
-            return Failure();
+                Title = book.GetValue("title").Value<string>(),
+                Category = category,
+                PublishmentYear = book.GetValue("publishmentYear").Value<string>(),
+                Price = book.GetValue("price").Value<decimal>(),
+                PublishingHouse = pubhouse
+
+            };
+            
+            
+            var result = _context.Books.Add(book2);
+            await _context.SaveChangesAsync();
+
+            var result2 = await _context.Books.Where(i => i.Title == book2.Title).FirstOrDefaultAsync();
+
+            var bookauthor = new BookAuthor()
+            {
+                BookId = result2.ISBN,
+                AuthorId = book.GetValue("authors").Value<int>(),
+
+            };
+
+            _context.BookAuthors.Add(bookauthor);
+            await _context.SaveChangesAsync();
+            return Success();
+            
         }
 
         // DELETE: api/Books/5

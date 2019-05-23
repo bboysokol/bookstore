@@ -6,8 +6,13 @@
                     :items="list"
                     class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.id }}</td>
-          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.isbn }}</td>
+          <td>{{ props.item.title }}</td>
+          <td><p v-for="author in props.item.authors" :key="author.id">{{author.name}}{{author.surname}}</p></td>
+          <td>{{ props.item.publishingHouse.title }}</td>
+          <td>{{ props.item.category.title }}</td>
+          <td>{{ props.item.publishmentYear }}</td>
+          <td>${{ props.item.price }}</td>
         </template>
       </v-data-table>
     </v-app>
@@ -24,17 +29,22 @@
       list: [],
       headers: [
         {
-          text: 'Id',
+          text: 'ISBN',
           align: 'left',
           value: 'id'
         },
-        { text: 'Name', value: 'name' },
+        { text: 'Title', value: 'title' },
+        { text: 'Authors', value: 'author' },
+        { text: 'Publishing House', value: 'phouse' },
+        { text: 'Category', value: 'category' },
+        { text: 'Publishment Year', value: 'pyear' },
+        { text: 'Price', value: 'price' },
       ],
     }),
     created: function () {
       var that = this;
       
-        axios.get('authors/GetAuthors')
+        axios.get('books/GetBooks')
           .then(function (response) {
             console.log(response.data.payload);
             that.list = response.data.payload;

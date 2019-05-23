@@ -4,14 +4,16 @@ using Bookstore.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookstore.Migrations
 {
     [DbContext(typeof(BookstoreDbContext))]
-    partial class BookstoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190514080916_client update")]
+    partial class clientupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +60,8 @@ namespace Bookstore.Migrations
                     b.Property<string>("PublishmentYear")
                         .IsRequired();
 
+                    b.Property<int?>("ShoppingCartId");
+
                     b.Property<string>("Title")
                         .IsRequired();
 
@@ -67,8 +71,7 @@ namespace Bookstore.Migrations
 
                     b.HasIndex("PublishingHouseId");
 
-                    b.HasIndex("Title")
-                        .IsUnique();
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Books");
                 });
@@ -110,7 +113,11 @@ namespace Bookstore.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("ApartamentNumber");
+                    b.Property<string>("ApartamentNumber")
+                        .IsRequired();
+
+                    b.Property<string>("City")
+                        .IsRequired();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -145,9 +152,6 @@ namespace Bookstore.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("PostCode")
-                        .IsRequired();
 
                     b.Property<string>("SecurityStamp");
 
@@ -188,11 +192,15 @@ namespace Bookstore.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int>("ShoppingCartId");
+
                     b.Property<bool>("Status");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Orders");
                 });
@@ -216,13 +224,13 @@ namespace Bookstore.Migrations
 
             modelBuilder.Entity("Bookstore.Models.ShoppingCart", b =>
                 {
-                    b.Property<int>("ISBN");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("OrderId");
+                    b.Property<float>("TotalPrice");
 
-                    b.HasKey("ISBN", "OrderId");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShopingCarts");
                 });
@@ -348,6 +356,10 @@ namespace Bookstore.Migrations
                         .WithMany()
                         .HasForeignKey("PublishingHouseId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Bookstore.Models.ShoppingCart")
+                        .WithMany("Books")
+                        .HasForeignKey("ShoppingCartId");
                 });
 
             modelBuilder.Entity("Bookstore.Models.BookAuthor", b =>
@@ -369,18 +381,10 @@ namespace Bookstore.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("Bookstore.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("Bookstore.Models.Book", "Book")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("ISBN")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Bookstore.Models.Order", "Order")
-                        .WithMany("ShoppingCarts")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("Bookstore.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

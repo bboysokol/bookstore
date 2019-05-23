@@ -7,7 +7,7 @@
                     class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
-          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.title }}</td>
         </template>
       </v-data-table>
     </v-app>
@@ -28,13 +28,13 @@
           align: 'left',
           value: 'id'
         },
-        { text: 'Name', value: 'name' },
+        { text: 'Title', value: 'title' },
       ],
     }),
     created: function () {
       var that = this;
       
-        axios.get('authors/GetAuthors')
+        axios.get('publishinghouses/GetAll')
           .then(function (response) {
             console.log(response.data.payload);
             that.list = response.data.payload;
