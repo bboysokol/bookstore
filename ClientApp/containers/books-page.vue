@@ -30,7 +30,7 @@
               <v-card-actions class="pa-3">
                 ${{book.price}}
                 <v-spacer></v-spacer>
-                <v-btn>Add</v-btn>
+                <v-btn @click ="addBookToCart(book)">Add</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -42,7 +42,9 @@
   </div>
 </template>
 <script>
+  import { mapActions, mapState } from 'vuex'
   import { getBooks } from '../services/books'
+  import { addOrder } from '../services/orders'
   export default {
     data() {
       return {
@@ -50,6 +52,9 @@
         books: [],
       }
     },
+
+    
+
     watch: {
       "$route"(to, from) {
         this.getBody();
@@ -66,8 +71,25 @@
         this.title = this.$route.params.category.toUpperCase();
         getBooks().then(value => this.books = value);
         console.log(this.books);
-      }
-    }
+      },
+      buy: function (bookId) {
+        addOrder(bookId, this.$cookies.get('UserCookie').id);
+      },
+
+      
+
+      ...mapActions(['addBook']),
+
+      addBookToCart: function (book) {
+        var cart = this.currentCart.concat(book);
+        this.addBook({ cart: cart })
+      },
+    },
+    computed: {
+      ...mapState({
+        currentCart: state => state.cart
+      })
+    },
 
   }
 </script>

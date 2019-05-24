@@ -6,8 +6,8 @@
                     :items="list"
                     class="elevation-1">
         <template v-slot:items="props">
-          <td>{{ props.item.id }}</td>
-          <td>{{ props.item.date }}</td>
+          <td>{{ props.item.title }}</td>
+          <td>{{ props.item.category.title }}</td>
         </template>
       </v-data-table>
     </v-app>
@@ -17,28 +17,25 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
+  import { mapActions, mapState } from 'vuex'
   export default {
     data: () => ({
-      list: [],
       headers: [
         {
-          text: 'Id',
+          text: 'Title',
           align: 'left',
           value: 'id'
         },
         { text: 'Name', value: 'name' },
       ],
     }),
+    computed: {
+      ...mapState({
+        list: state => state.cart,
+      })
+    },
     created: function () {
-      var that = this;
-      
-        axios.get('orders/GetOrders')
-          .then(function (response) {
-            console.log(response.data.payload);
-            that.list = response.data.payload;
-          })
+     
     },
     methods: {
       submit() {

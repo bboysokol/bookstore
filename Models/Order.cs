@@ -13,14 +13,12 @@ namespace Bookstore.Models
         public int Id { get; set; }
         [Required]
         public string ClientId { get; set; }
-        [Required]
         [ForeignKey("ClientId")]
         public Client Client { get; set; }
-        [Required]
-        public DateTime Date { get; set; }
-        [Required]
-        public bool Status { get; set; }
+        public string Date { get; set; } = String.Format("{0:g}", DateTime.Now);
+        public bool IsDone { get; set; }
         public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+        public decimal Price { get; set; }
 
     }
 }

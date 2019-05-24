@@ -12,14 +12,17 @@
       <search-bar  style="margin-top:0px;" />
       <v-spacer />
       <v-btn icon>
-        <v-badge bottom
-                 overlap
-                 color="#12d483">
-          <span slot="badge">
-            2
-          </span>
-          <v-icon>shopping_cart</v-icon>
-        </v-badge>
+        <router-link 
+                     :to="'/cart'">
+          <v-badge bottom
+                   overlap
+                   color="#12d483">
+            <span slot="badge">
+              {{currentCart.length}}
+            </span>
+            <v-icon>shopping_cart</v-icon>
+          </v-badge>
+        </router-link>
       </v-btn>
       <v-menu bottom
               left
@@ -57,6 +60,7 @@
 </template>
 <script>
   import { routes } from '../router/routes'
+  import { mapActions, mapState } from 'vuex'
   import axios from 'axios'
   import Searchbar from './searchbar'
   import router from '../router/index'
@@ -89,6 +93,9 @@
       visibleRoutes: function () {
         return this.routes.filter(item => { return item.visible });
       },
+      ...mapState({
+        currentCart: state => state.cart
+      })
     },
     created: function () {
       var that = this;

@@ -9,6 +9,7 @@ using Bookstore.Database;
 using Bookstore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace Bookstore.Controllers
 {
@@ -31,9 +32,9 @@ namespace Bookstore.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public IEnumerable<Order> GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
-            return _context.Orders;
+            return Success(_context.Orders);
         }
 
         // GET: api/Orders/5
@@ -92,17 +93,27 @@ namespace Bookstore.Controllers
 
         // POST: api/Orders
         [HttpPost]
-        public async Task<IActionResult> PostOrder([FromBody] Order order)
+        public async Task<IActionResult> AddOrder([FromBody]JObject data)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
+            var order = new Order()
+            {
+                ClientId = data.GetValue("clientId").Value<string>(),
+                IsDone = true,
+
+            };
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
+            var orderId = 1;
+            var cart = new ShoppingCart()
+            {
+                ISBN = data.GetValue("bookId").Value<int>(),
+                OrderId = orderId
+            };
+            _context.ShopingCarts.Add(cart);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+            return Success();
         }
 
         // DELETE: api/Orders/5
