@@ -20,6 +20,7 @@ Vue.component('icon', FontAwesomeIcon)
 
 Vue.prototype.$http = axios
 axios.defaults.baseURL = Configuration.ApiPath
+Vue.prototype.$appPath = Configuration.ServerPath
 sync(store, router)
 
 

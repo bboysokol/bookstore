@@ -8,7 +8,6 @@ namespace Bookstore.Models
 {
     public class PublishingHouseVM
     {
-        [Key]
         public int Id { get; set; }
         public string Title { get; set; }
     }

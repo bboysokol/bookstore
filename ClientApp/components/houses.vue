@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      Authors
+      <v-toolbar flat color="red">
+        <v-toolbar-title>Publishing Houses management</v-toolbar-title>
+        <v-divider class="mx-2"
+                   inset
+                   vertical></v-divider>
+        <v-spacer></v-spacer>
+        <publish-form></publish-form>
+      </v-toolbar>
       <v-data-table :headers="headers"
                     :items="list"
                     class="elevation-1">
@@ -18,7 +25,7 @@
 
 <script>
   import axios from 'axios'
-
+  import publishForm from '../components/publishHouse-form'
   export default {
     data: () => ({
       list: [],
@@ -34,7 +41,7 @@
     created: function () {
       var that = this;
       
-        axios.get('publishinghouses/GetAll')
+      axios.get('publishinghouses/GetPublishingHouses')
           .then(function (response) {
             console.log(response.data.payload);
             that.list = response.data.payload;
@@ -44,6 +51,9 @@
       submit() {
         
       },
+    },
+    components: {
+      'publish-form': publishForm,
     }
   }
 </script>

@@ -10,6 +10,7 @@ using Bookstore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using Bookstore.Services;
 
 namespace Bookstore.Controllers
 {
@@ -17,129 +18,63 @@ namespace Bookstore.Controllers
     [ApiController]
     public class OrdersController : BaseController
     {
-        private readonly BookstoreDbContext _context;
+        private readonly OrderService _orderService;
         private readonly ILogger<OrdersController> _logger = null;
         public OrdersController(
             SignInManager<Client> signInManager,
             UserManager<Client> userManager,
             ILoggerFactory loggerFactory,
-            BookstoreDbContext context)
+            OrderService orderService)
             : base(signInManager, userManager, loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<OrdersController>();
-            _context = context;
+            _orderService = orderService;
         }
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders(int take, int skip)
         {
-            return Success(_context.Orders);
-        }
-
-        // GET: api/Orders/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrder([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(order);
-        }
-
-        // PUT: api/Orders/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder([FromRoute] int id, [FromBody] Order order)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != order.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(order).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return await _orderService.GetOrders(take, skip);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _logger.LogError(ex, "Error in GetOrders()");
+                return Failure();
             }
-
-            return NoContent();
         }
+
 
         // POST: api/Orders
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody]JObject data)
+        public async Task<IActionResult> AddOrder([FromBody]JObject order)
         {
-
-            var order = new Order()
+            try
             {
-                ClientId = data.GetValue("clientId").Value<string>(),
-                IsDone = true,
-
-            };
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-            var orderId = 1;
-            var cart = new ShoppingCart()
+                return await _orderService.AddOrder(order);
+            }
+            catch (Exception ex)
             {
-                ISBN = data.GetValue("bookId").Value<int>(),
-                OrderId = orderId
-            };
-            _context.ShopingCarts.Add(cart);
-            await _context.SaveChangesAsync();
-
-            return Success();
+                _logger.LogError(ex, "Error in AddOrder()");
+                return Failure();
+            }
         }
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                return await _orderService.DeleteOrder(id);
             }
-
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in DeleteOrder()");
+                return Failure();
             }
-
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
-
-            return Ok(order);
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

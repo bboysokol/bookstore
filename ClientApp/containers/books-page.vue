@@ -12,7 +12,7 @@
             <v-card color="cyan darken-2" class="white--text">
               <v-layout>
                 <v-flex xs5>
-                  <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"
+                  <v-img :src="$appPath +'/img/' + book.img"
                          height="125px"
                          contain></v-img>
                 </v-flex>
@@ -30,10 +30,12 @@
               <v-card-actions class="pa-3">
                 ${{book.price}}
                 <v-spacer></v-spacer>
-                <v-btn @click ="addBookToCart(book)">Add</v-btn>
+                <v-btn @click="addBookToCart(book)">Add</v-btn>
               </v-card-actions>
             </v-card>
+
           </v-flex>
+          <v-btn round color="primary" @click="more" dark>Rounded Button</v-btn>
         </v-layout>
       </v-container>
     </v-card>
@@ -45,18 +47,19 @@
   import { mapActions, mapState } from 'vuex'
   import { getBooks } from '../services/books'
   import { addOrder } from '../services/orders'
+import { config } from '@fortawesome/fontawesome';
   export default {
     data() {
       return {
         title: "",
         books: [],
+        take: 10,
+        skip: 0,
       }
     },
-
-    
-
     watch: {
       "$route"(to, from) {
+        this.skip = 0;
         this.getBody();
       },
     },
@@ -69,14 +72,18 @@
     methods: {
       getBody: function () {
         this.title = this.$route.params.category.toUpperCase();
-        getBooks().then(value => this.books = value);
+        getBooks(this.take, this.skip, this.$route.params.category).then(value => this.books = value);
+        this.skip += this.take;
         console.log(this.books);
       },
       buy: function (bookId) {
         addOrder(bookId, this.$cookies.get('UserCookie').id);
       },
-
-      
+      more: function () {
+        getBooks(this.take, this.skip, this.$route.params.category).then(value => this.books = this.books.concat(value));
+        console.log(this.books);
+        this.skip += this.take;
+      },
 
       ...mapActions(['addBook']),
 

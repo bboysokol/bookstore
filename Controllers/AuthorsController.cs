@@ -8,6 +8,7 @@ using Bookstore.Database;
 using Bookstore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Bookstore.Services;
 
 namespace Bookstore.Controllers
 {
@@ -15,17 +16,17 @@ namespace Bookstore.Controllers
     [ApiController]
     public class AuthorsController : BaseController
     {
-        private readonly BookstoreDbContext _context;
+        private readonly AuthorService _authorService;
         private readonly ILogger<AuthorsController> _logger = null;
         public AuthorsController(
             SignInManager<Client> signInManager,
             UserManager<Client> userManager,
             ILoggerFactory loggerFactory,
-            BookstoreDbContext context)
+            AuthorService authorService)
             : base(signInManager, userManager, loggerFactory)
         {
+            _authorService = authorService;
             _logger = loggerFactory.CreateLogger<AuthorsController>();
-            _context = context;
         }
 
         [HttpGet]
@@ -33,17 +34,10 @@ namespace Bookstore.Controllers
         {
             try
             {
-                var authors = await _context.Authors
-                    .Select(row => new AuthorVM()
-                    {
-                        Id = row.Id,
-                        Name = row.Name+ " " + row.Surname
-                    }).ToListAsync();
-                return Success(authors);
+                return await _authorService.GetAuthors();
             }
             catch (Exception ex)
             {
-
                 _logger.LogError(ex, "Error in GetAuthors()");
                 return Failure();
             }
@@ -54,20 +48,9 @@ namespace Bookstore.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthor([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             try
             {
-                var author = await _context.Authors.FirstOrDefaultAsync(i => i.Id == id);
-
-                if (author == null)
-                {
-                    return NotFound();
-                }
-
-                return Success(author);
+                return await _authorService.GetAuthor(id);
             }catch(Exception ex)
             {
                 _logger.LogError(ex, "Error in GetAuthor()");
@@ -75,52 +58,11 @@ namespace Bookstore.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditAuthor([FromRoute] int id, [FromBody] Author author)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != author.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         [HttpPost]
         public async Task<IActionResult> AddAuthor([FromBody] Author author)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             try {
-                _context.Authors.Add(author);
-                await _context.SaveChangesAsync();
-
-                return Success();
+            return await _authorService.AddAuthor(author);
             }catch(Exception ex)
             {
                 _logger.LogError(ex, "Error in AddAuthor()");
@@ -130,36 +72,18 @@ namespace Bookstore.Controllers
         }
 
         // DELETE: api/Authors/5
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> DeleteAuthor([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var author = await _context.Authors.FirstOrDefaultAsync(i => i.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
             try
             {
-                _context.Authors.Remove(author);
-                await _context.SaveChangesAsync();
-
-                return Success();
+                return await _authorService.DeleteAuthor(id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in DeleteAuthor()");
                 return Failure();
             }
-        }
-
-        private bool AuthorExists(int id)
-        {
-            return _context.Authors.Any(e => e.Id == id);
         }
     }
 }

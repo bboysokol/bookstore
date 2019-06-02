@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Bookstore.Controllers.AuthenticationController">
+    <Position X="1.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAgAAAAAAAAABABAAAAAGAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthenticationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.AuthorsController">
+    <Position X="3.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAgIABAAAgAABAAAAAAAAA=</HashCode>
+      <FileName>Controllers\AuthorsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.BaseController">
+    <Position X="6.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAQAAAAAIgAAAACAAAAAAAAAAEA=</HashCode>
+      <FileName>Controllers\BaseController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.BooksController">
+    <Position X="6" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAAAAAAAAAAgAAACAAAAACIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\BooksController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.CategoriesController">
+    <Position X="8.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAYAAAACAAAAAAAAIQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\CategoriesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.HomeController">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.OrdersController">
+    <Position X="10.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgAAAAAAAAAAAAAAAAIAAAAAAAAGAAAAAAAAA=</HashCode>
+      <FileName>Controllers\OrdersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Controllers.PublishingHousesController">
+    <Position X="12.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAIAAAAAAAAAAAAAggABA=</HashCode>
+      <FileName>Controllers\PublishingHousesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Database.BookstoreDbContext">
+    <Position X="13.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAABAQAAAAAAAAAAAkABAEAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Database\BookstoreDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.Author">
+    <Position X="10.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAABAAAAAAAAAAAQABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Author.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.Book">
+    <Position X="13.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAQAQBCAEAAAAAAAAAAAAQAAAAAAAAAAQAACAA=</HashCode>
+      <FileName>Models\Book.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.BookAuthor">
+    <Position X="20.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAABAgAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Models\BookAuthor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.Category">
+    <Position X="22.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.Client">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAABAAAAAAQADEAAAAAAAAIAgQABAAA=</HashCode>
+      <FileName>Models\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.Order">
+    <Position X="17.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQCAAAQAAAAAAgAAAAAAAAAAAAAABAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.PublishingHouse">
+    <Position X="17.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PublishingHouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.ShoppingCart">
+    <Position X="20.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAAAAAQAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ShoppingCart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.AuthorVM">
+    <Position X="12" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\AuthorVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.BookVM">
+    <Position X="15.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAQACAEAAAAAAAAAAAARAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>ViewModels\BookVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.ClientVM">
+    <Position X="22.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAABAAAAAAQADEAAAAAAAAIAgQABAAA=</HashCode>
+      <FileName>ViewModels\ClientVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.OrderVM">
+    <Position X="19" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQCAAAQAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQ=</HashCode>
+      <FileName>ViewModels\OrderVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.PublishingHouseVM">
+    <Position X="19" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\PublishingHouseVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Models.ShoppingCartVM">
+    <Position X="19" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\ShoppingCartVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Result.Response">
+    <Position X="4" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Result\Response.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Result.Result&lt;T&gt;">
+    <Position X="4" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Result\Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.AuthorService">
+    <Position X="8" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAgAABAAAgAABAAAAAAAAA=</HashCode>
+      <FileName>Services\AuthorService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.BookService">
+    <Position X="10.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAAAAAAAAABgAAACAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\BookService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.CategoriesService">
+    <Position X="1.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAYABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\CategoriesService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.OrderService">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAgAAAABgAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Services\OrderService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.PublishingHouseService">
+    <Position X="5.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAggABA=</HashCode>
+      <FileName>Services\PublishingHouseService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.ServiceBase" Collapsed="true">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\ServiceBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Services.UserService" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAIAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.214" Collapsed="true" />
+  </Class>
+  <Class Name="Bookstore.ViewModels.LoginRequest">
+    <Position X="1" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\LoginRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.ViewModels.RegisterRequest">
+    <Position X="1" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAQABEAAAAAAAQIAgAAAAAA=</HashCode>
+      <FileName>ViewModels\RegisterRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Program">
+    <Position X="18.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bookstore.Startup">
+    <Position X="16.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Bookstore.Services.IUserService">
+    <Position X="15.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\IUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

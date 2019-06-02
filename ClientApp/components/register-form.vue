@@ -10,7 +10,9 @@
       Sign Up
     </v-btn>
     <v-card class="dialog">
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-form ref="form"
+              v-model="valid"
+              lazy-validation>
 
         <v-card-title class="headline amber darken-1"
                       primary-title>
@@ -139,7 +141,7 @@
       postcode: '',
       street: '',
       housenumber: '',
-      apartamentnumber:'',
+      apartamentnumber: '',
       alert: {
         state: false,
         type: "error",

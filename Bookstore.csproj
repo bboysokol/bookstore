@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Diagrams" Version="0.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->
@@ -17,6 +17,9 @@
   <ItemGroup>
     <Folder Include="Providers\" />
     <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Natka i Pciemo\Desktop\classDiagram.cd" Link="classDiagram.cd" />
   </ItemGroup>
 
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">

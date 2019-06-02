@@ -10,6 +10,7 @@ using Bookstore.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Linq;
+using Bookstore.Services;
 
 namespace Bookstore.Controllers
 {
@@ -17,164 +18,118 @@ namespace Bookstore.Controllers
     [ApiController]
     public class BooksController : BaseController
     {
-        private readonly BookstoreDbContext _context;
+        private readonly BookService _bookService;
         private readonly ILogger<BooksController> _logger = null;
         public BooksController(
             SignInManager<Client> signInManager,
             UserManager<Client> userManager,
             ILoggerFactory loggerFactory,
-            BookstoreDbContext context)
+            BookService bookService)
             : base(signInManager, userManager, loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<BooksController>();
-            _context = context;
+            _bookService = bookService;
         }
 
         // GET: api/Books
         [HttpGet]
         public async Task<IActionResult> GetBooks(int take, int skip, string category)
         {
-            var booksQuery = _context.Books
-                .Include(a => a.BookAuthors).ThenInclude(a => a.Author)
-                .Include(a => a.Category)
-                .Include(a => a.PublishingHouse)
-                .Where(a => !a.IsDeleted);
-
-            if (category != null)
-                booksQuery = booksQuery.Where(b => b.Category.Title == category);
-
-            var books = await booksQuery
-                .Skip(1)
-                .Select(row => new BookVM()
-                {
-                    ISBN = row.ISBN,
-                    Title = row.Title,
-                    Category = row.Category,
-                    Price = row.Price,
-                    PublishmentYear = row.PublishmentYear,
-                    PublishingHouse = row.PublishingHouse,
-                    Authors = row.BookAuthors.Select(row2 => row2.Author).ToList()
-                }).ToListAsync();
-
-
-            return Success(books);
+            try
+            {
+                return await _bookService.GetBooks(take, skip, category);
+            }catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetBooks()");
+                return Failure();
+            }
         }
 
         // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBook([FromRoute] int id)
         {
-            var book = await _context.Books
-                .Include(a => a.BookAuthors).ThenInclude(a => a.Author)
-                .Include(a => a.Category)
-                .Include(a => a.PublishingHouse)
-                .Where(a => !a.IsDeleted && a.ISBN == id)
-                .Select(row => new BookVM()
-                {
-                    ISBN = row.ISBN,
-                    Title = row.Title,
-                    Category = row.Category,
-                    Price = row.Price,
-                    PublishmentYear = row.PublishmentYear,
-                    PublishingHouse = row.PublishingHouse,
-                    Authors = row.BookAuthors.Select(row2 => row2.Author).ToList()
-                }).FirstOrDefaultAsync();
-
-
-            return Success(book);
+            try
+            {
+                return await _bookService.GetBook(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetBook()");
+                return Failure();
+            }
         }
 
         // PUT: api/Books/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditBook([FromRoute] int id, [FromBody] Book book)
+        public async Task<IActionResult> EditPrice([FromRoute] int id, [FromBody] decimal price)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != book.ISBN)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(book).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return await _bookService.EditPrice(id, price);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _logger.LogError(ex, "Error in EditPrice()");
+                return Failure();
             }
-
-            return NoContent();
         }
 
         // POST: api/Books
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody]JObject book)
         {
-
-            var category = await _context.Categories.Where(i => i.Id == book.GetValue("category").Value<int>()).FirstOrDefaultAsync();
-
-            var pubhouse = await _context.PublishingHouses.Where(i => i.Id == book.GetValue("publishinghouse").Value<int>()).FirstOrDefaultAsync();
-            var book2 = new Book()
+            try
             {
-                Title = book.GetValue("title").Value<string>(),
-                Category = category,
-                PublishmentYear = book.GetValue("publishmentYear").Value<string>(),
-                Price = book.GetValue("price").Value<decimal>(),
-                PublishingHouse = pubhouse
-
-            };
-            
-            
-            var result = _context.Books.Add(book2);
-            await _context.SaveChangesAsync();
-
-            var result2 = await _context.Books.Where(i => i.Title == book2.Title).FirstOrDefaultAsync();
-
-            var bookauthor = new BookAuthor()
+                return await _bookService.AddBook(book);
+            }
+            catch (Exception ex)
             {
-                BookId = result2.ISBN,
-                AuthorId = book.GetValue("authors").Value<int>(),
-
-            };
-
-            _context.BookAuthors.Add(bookauthor);
-            await _context.SaveChangesAsync();
-            return Success();
-            
+                _logger.LogError(ex, "Error in AddBook()");
+                return Failure();
+            }
         }
 
         // DELETE: api/Books/5
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            try
             {
-                return NotFound();
+                return await _bookService.DeleteBook(id);
             }
-
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
-
-            return Success();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DeleteBook()");
+                return Failure();
+            }
         }
 
-        private bool BookExists(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetTopBooks()
         {
-            return _context.Books.Any(e => e.ISBN == id);
+            try
+            {
+                return await _bookService.GetTopBooks();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetTopBooks()");
+                return Failure();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddTopBooks()
+        {
+            try
+            {
+                return await _bookService.AddTopBooks();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in AddTopBooks()");
+                return Failure();
+            }
         }
     }
 }

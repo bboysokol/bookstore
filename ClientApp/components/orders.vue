@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      Authors
+      <v-toolbar flat color="red">
+        <v-toolbar-title>Orders management</v-toolbar-title>
+        <v-divider class="mx-2"
+                   inset
+                   vertical></v-divider>
+        <v-spacer></v-spacer>
+      </v-toolbar>
       <v-data-table :headers="headers"
                     :items="list"
                     class="elevation-1">
@@ -22,6 +28,8 @@
   export default {
     data: () => ({
       list: [],
+      take: 10,
+      skip: 0,
       headers: [
         {
           text: 'Id',
@@ -34,9 +42,9 @@
     created: function () {
       var that = this;
       
-        axios.get('orders/GetOrders')
+      axios.get('orders/GetOrders' + '?take=' + that.take + '&skip=' + that.skip)
           .then(function (response) {
-            console.log(response.data.payload);
+            that.skip += 10;
             that.list = response.data.payload;
           })
     },

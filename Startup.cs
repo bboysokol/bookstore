@@ -65,6 +65,14 @@ namespace Bookstore
                 };
             });
 
+            services.AddTransient<AuthorService>();
+            services.AddTransient<CategoriesService>();
+            services.AddTransient<PublishingHouseService>();
+            services.AddTransient<BookService>();
+            services.AddTransient<ServiceBase>();
+            services.AddTransient<OrderService>();
+
+
             // Add framework services.
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

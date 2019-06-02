@@ -1,13 +1,21 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      Authors
+      <v-toolbar flat color="#FFB300">
+        <v-toolbar-title>Authors management</v-toolbar-title>
+        <v-divider class="mx-2"
+                   inset
+                   vertical></v-divider>
+        <v-spacer></v-spacer>
+        <author-form></author-form>
+      </v-toolbar>
       <v-data-table :headers="headers"
                     :items="list"
                     class="elevation-1">
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td>{{ props.item.name }}</td>
+          <td><delete-alert @deleted="deleteItem(props.item.id)"></delete-alert></td>
         </template>
       </v-data-table>
     </v-app>
@@ -18,6 +26,9 @@
 
 <script>
   import axios from 'axios'
+  import authorForm from '../components/author-form'
+  import deleteAlert from '../components/delete-alert'
+  import { getAuthors, deleteAuthor } from '../services/authors'
 
   export default {
     data: () => ({
@@ -32,17 +43,19 @@
       ],
     }),
     created: function () {
-      var that = this;
-      
-        axios.get('authors/GetAuthors')
-          .then(function (response) {
-            console.log(response.data.payload);
-            that.list = response.data.payload;
-          })
+      this.getBody();
+    },
+    components: {
+      'author-form': authorForm,
+      'delete-alert': deleteAlert
     },
     methods: {
-      submit() {
-        
+      getBody() {
+        getAuthors().then(value => this.list = value);
+      },
+      async deleteItem(id) {
+        await deleteAuthor(id);
+        this.getBody();
       },
     }
   }

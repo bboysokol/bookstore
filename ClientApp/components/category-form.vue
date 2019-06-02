@@ -3,34 +3,43 @@
             dark
             v-model="dialog">
     <v-btn slot="activator"
-           color="#FFB300"
+           color="black"
            class="modal-button"
-           outline
-           round>
+           dark
+   >
       Add category
     </v-btn>
     <v-card class="dialog">
       <v-form ref="form"
               v-model="valid"
               lazy-validation>
-        <v-alert :value="alert"
-                 type="error"
+        <v-card-title class="headline amber darken-1"
+                      primary-title>
+          New category
+          <v-spacer></v-spacer>
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-alert :value="alert.state"
+                 :type="alert.type"
                  transition="scale-transition">
-          "Username or password is incorrect"
+          {{alert.content}}
         </v-alert>
-        <v-label>Add new category</v-label><br />
-        <v-text-field v-model="title"
-                      :rules="titleRules"
-                      label="Title"
-                      required
-                      color="#12d483"
-                      prepend-inner-icon="person"
-                      outline>
-        </v-text-field>
-        <v-btn @click="submit"
-               color="#12d483"
-               outline
-               round>Add Category</v-btn><br />
+        <v-card-text class="dialog-card">
+          <v-text-field v-model="title"
+                        :rules="titleRules"
+                        label="Title"
+                        required
+                        color="#FFB300"
+                        prepend-inner-icon="person"
+                        outline>
+          </v-text-field>
+          <v-btn @click="submit"
+                 color="#FFB300"
+                 outline
+                 round>Add Category</v-btn>
+          </v-card-text>
       </v-form>
     </v-card>
   </v-dialog>

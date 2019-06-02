@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bookstore.Database;
 using Bookstore.Models;
+using Bookstore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,65 +18,61 @@ namespace Bookstore.Controllers
     [ApiController]
     public class PublishingHousesController : BaseController
     {
-
-        private readonly BookstoreDbContext _context;
+        private readonly PublishingHouseService _publishingHouseService;
         private readonly ILogger<PublishingHousesController> _logger = null;
 
         public PublishingHousesController(
             SignInManager<Client> signInManager,
             UserManager<Client> userManager,
             ILoggerFactory loggerFactory,
-            BookstoreDbContext context)
+            PublishingHouseService publishingHouseService)
             : base(signInManager, userManager, loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<PublishingHousesController>();
-            _context = context;
+            _publishingHouseService = publishingHouseService;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetPublishingHouses()
         {
-            var publishHouses = await _context.PublishingHouses
-                           .Select(row => new PublishingHouse()
-                           {
-                               Id = row.Id,
-                               Title = row.Title,
-                           }).ToListAsync();
-                ;
-            return Success(publishHouses);
+            try
+            {
+                return await _publishingHouseService.GetPublishingHouses();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetPublishingHouses()");
+                return Failure();
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] JObject NewTitle)
+        public async Task<IActionResult> AddPublishingHouse([FromBody] JObject publishingHouse)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                return await _publishingHouseService.AddPublishingHouse(publishingHouse);
             }
-            var category = new PublishingHouse()
+            catch (Exception ex)
             {
-                Title = NewTitle.GetValue("NewTitle").ToString()
-            };
-            _context.PublishingHouses.Add(category);
-            await _context.SaveChangesAsync();
-
-            return Success();
+                _logger.LogError(ex, "Error in AddPublishingHouse()");
+                return Failure();
+            }
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] int id)
+        public async Task<IActionResult> DeletePublishingHouse([FromBody] int id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                return await _publishingHouseService.DeletePublishingHouse(id);
             }
-            var publishHouse = _context.PublishingHouses.FirstOrDefault(i => i.Id == id);
-
-            _context.PublishingHouses.Remove(publishHouse);
-            await _context.SaveChangesAsync();
-
-            return Success();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DeletePublishingHouse()");
+                return Failure();
+            }
         }
 
     }

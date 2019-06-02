@@ -4,7 +4,7 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet">
       <div class="row">
-          <nav-menu params="route: route"></nav-menu>
+        <nav-menu params="route: route"></nav-menu>
       </div>
       <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -18,16 +18,20 @@
           </div>
         </div>
       </div>
+
     </div>
+    <footerpanel></footerpanel>
   </v-app>
 </template>
 
 <script>
   import NavMenu from './nav-menu'
   import SideNav from './side-nav'
+  import Footer from './footer'
 
     export default {
-      components: {
+    components: {
+        'footerpanel': Footer,
         'nav-menu': NavMenu,
         'side-nav': SideNav,
       },

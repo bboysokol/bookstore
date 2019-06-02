@@ -31,6 +31,9 @@ const actions = ({
   },
   addBook({ commit }, obj) {
     commit(MAIN_BOOK_STORAGE, obj)
+  },
+  deleteBooks({ commit }, obj) {
+    commit(MAIN_BOOK_STORAGE, obj)
   }
 })
 

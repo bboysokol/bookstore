@@ -15,7 +15,7 @@ namespace Bookstore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -229,6 +229,21 @@ namespace Bookstore.Migrations
                     b.ToTable("ShopingCarts");
                 });
 
+            modelBuilder.Entity("Bookstore.Models.TopBook", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BookId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("TopBooks");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -383,6 +398,14 @@ namespace Bookstore.Migrations
                     b.HasOne("Bookstore.Models.Order", "Order")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Bookstore.Models.TopBook", b =>
+                {
+                    b.HasOne("Bookstore.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

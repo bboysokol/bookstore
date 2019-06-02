@@ -46,7 +46,8 @@
         </v-list>
       </v-menu>
       <login-modal class="hidden-sm-and-down"
-                   v-if="!isLogged"></login-modal>
+                   v-if="!isLogged"
+                   @userLogged="isLogged = true"></login-modal>
       <register-modal class="hidden-sm-and-down"
                       v-if="!isLogged"></register-modal>
       <v-btn @click="logout"
@@ -84,11 +85,6 @@
         ]
       }
     },
-    watch: {
-      newNotification: function (newVal, oldVal) {
-        this.showNotifications();
-      }
-    },
     computed: {
       visibleRoutes: function () {
         return this.routes.filter(item => { return item.visible });
@@ -119,7 +115,7 @@
             console.log(response)
           });
         $cookies.remove('UserCookie');
-        this.$emit('successLogout');
+        this.isLogged = false;
         router.push('/')
       },
     }

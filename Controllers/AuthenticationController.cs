@@ -116,9 +116,6 @@ namespace Bookstore.Controllers
                 logger.LogError(ex, "Error in LogIn()");
                 return Failure();
             }
-
-
-
         }
 
         //[Route("Logout")]

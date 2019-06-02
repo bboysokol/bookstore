@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bookstore.Database;
 using Bookstore.Models;
+using Bookstore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,65 +18,61 @@ namespace Bookstore.Controllers
     [ApiController]
     public class CategoriesController : BaseController
     {
-
-        private readonly BookstoreDbContext _context;
+        private readonly CategoriesService _categoriesService;
         private readonly ILogger<PublishingHousesController> _logger = null;
 
         public CategoriesController(
             SignInManager<Client> signInManager,
             UserManager<Client> userManager,
             ILoggerFactory loggerFactory,
-            BookstoreDbContext context)
+            CategoriesService categoriesService)
             : base(signInManager, userManager, loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<PublishingHousesController>();
-            _context = context;
+            _categoriesService = categoriesService;
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = await _context.Categories
-                           .Select(row => new Category()
-                           {
-                               Id = row.Id,
-                               Title = row.Title,
-                           }).ToListAsync();
-                ;
-            return Success(categories);
+            try
+            {
+                return await _categoriesService.GetCategories();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetCategories()");
+                return Failure();
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] JObject NewTitle)
+        public async Task<IActionResult> AddCategory([FromBody] JObject category)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                return await _categoriesService.AddCategory(category);
             }
-            var category = new Category()
+            catch (Exception ex)
             {
-                Title = NewTitle.GetValue("NewTitle").ToString()
-            };
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            return Success();
+                _logger.LogError(ex, "Error in AddCategory()");
+                return Failure();
+            }
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] int id)
+        public async Task<IActionResult> DeleteCategory([FromBody] int id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                return await _categoriesService.DeleteCategory(id);
             }
-            var category = _context.Categories.FirstOrDefault(i => i.Id == id);
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return Success();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DeleteCategory()");
+                return Failure();
+            }
         }
 
     }

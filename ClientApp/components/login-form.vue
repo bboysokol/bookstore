@@ -20,6 +20,11 @@
             <v-icon>close</v-icon>
           </v-btn>
         </v-card-title>
+        <v-alert :value="alert.state"
+                 :type="alert.type"
+                 transition="scale-transition">
+          {{alert.content}}
+        </v-alert>
         <v-card-text class="dialog-card">
           <v-text-field v-model="username"
                         :rules="userRules"
@@ -60,7 +65,11 @@
   export default {
     data: () => ({
       valid: true,
-      alert: false,
+      alert: {
+        state: false,
+        type: "error",
+        content: ''
+      },
       dialog:false,
       password: '',
       passRules: [
@@ -87,9 +96,9 @@
               that.user = response.data.payload;
               $cookies.set('UserCookie', that.user)
               axios.defaults.headers = { 'Authorization': `Bearer ${that.user}` }
-              router.push('/')
+              that.$emit('userLogged')
             } else
-              that.alert = true;
+              that.alert = { state: true, type: "error", content: "Something goes wrong! Try again" };
           });
         }
       },

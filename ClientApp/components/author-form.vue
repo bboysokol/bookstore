@@ -3,44 +3,54 @@
             dark
             v-model="dialog">
     <v-btn slot="activator"
-           color="#FFB300"
+           color="black"
            class="modal-button"
-           outline
-           round>
+           outline>
       Add author
     </v-btn>
     <v-card class="dialog">
       <v-form ref="form"
               v-model="valid"
               lazy-validation>
-        <v-alert :value="alert"
-                 type="error"
-                 transition="scale-transition">
-          "Username or password is incorrect"
-        </v-alert>
-        <v-label>Add new author</v-label><br />
-        <v-text-field v-model="name"
-                      :rules="nameRules"
-                      label="Name"
-                      required
-                      color="#12d483"
-                      prepend-inner-icon="person"
-                      outline>
-        </v-text-field>
-        <v-text-field v-model="surname"
-                      :rules="nameRules"
-                      label="Surname"
-                      required
-                      outline
-                      color="#12d483"
-                      prepend-inner-icon="person"
-                      @keyup.enter="submit">
-        </v-text-field>
 
-        <v-btn @click="submit"
-               color="#12d483"
-               outline
-               round>Add Author</v-btn><br />
+        <v-card-title class="headline amber darken-1"
+                      primary-title>
+          New Author
+          <v-spacer></v-spacer>
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+
+        </v-card-title>
+        <v-alert :value="alert.state"
+                 :type="alert.type"
+                 transition="scale-transition">
+          {{alert.content}}
+        </v-alert>
+        <v-card-text class="dialog-card">
+          <v-text-field v-model="name"
+                        :rules="nameRules"
+                        label="Name"
+                        required
+                        color="#FFB300"
+                        prepend-inner-icon="person"
+                        outline>
+          </v-text-field>
+          <v-text-field v-model="surname"
+                        :rules="nameRules"
+                        label="Surname"
+                        required
+                        outline
+                        color="#FFB300"
+                        prepend-inner-icon="person"
+                        @keyup.enter="submit">
+          </v-text-field>
+
+          <v-btn @click="submit"
+                 color="#FFB300"
+                 outline
+                 round>Add Author</v-btn><br />
+        </v-card-text>
       </v-form>
     </v-card>
   </v-dialog>
@@ -58,6 +68,12 @@
         v => !!v || 'Name and Surname is required'
       ],
       surname: '',
+      alert: {
+        state: false,
+        type: "error",
+        content: ''
+      },
+      dialog: false
     }),
     methods: {
       submit() {
@@ -69,8 +85,10 @@
           }).then(function (response) {
             if (response.data.successful) {
               console.log(response.data);
-            } else
-              that.alert = true;
+              that.alert = { state: true, type: "success", content: "You have successfully added author" }
+            } else {
+              that.alert = { state: true, type: "error", content: "Something goes wrong! Try again" }
+            }
           });
         }
       },

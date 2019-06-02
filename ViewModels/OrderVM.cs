@@ -11,13 +11,10 @@ namespace Bookstore.Models
     {
         [Key]
         public int Id { get; set; }
-        public string ClientId { get; set; }
-        [ForeignKey("ClientId")]
-        public virtual ClientVM Client { get; set; }
-        public DateTime Date { get; set; }
-        public bool Status { get; set; }
-        public int ShoppingCartId { get; set; }
-        [ForeignKey("ShoppingCartId")]
-        public virtual ShoppingCartVM ShoppingCart { get; set; }
+        public ClientVM Client { get; set; }
+        public string Date { get; set; }
+        public bool IsDone { get; set; }
+        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+        public decimal Price { get; set; }
     }
 }

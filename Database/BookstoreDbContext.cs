@@ -22,6 +22,7 @@ namespace Bookstore.Database
         public DbSet<PublishingHouse> PublishingHouses { get; set; }
         public DbSet<ShoppingCart> ShopingCarts { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
+        public DbSet<TopBook> TopBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

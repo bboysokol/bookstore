@@ -47,7 +47,7 @@
       searchQuery(after, before) {
         var that = this
         if (this.searchQuery) {
-          axios.get('user/searchusers/' + this.searchQuery)
+          axios.get('books/searchusers/' + this.searchQuery)
             .then(function (data) {
               that.resources = data.data.payload;
             })
