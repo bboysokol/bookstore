@@ -5,8 +5,7 @@
     <v-btn slot="activator"
            color="black"
            class="modal-button"
-           dark
-   >
+           dark >
       Add category
     </v-btn>
     <v-card class="dialog">
@@ -52,7 +51,13 @@
     data: () => ({
       valid: true,
       alert: false,
+      dialog:false,
       title: '',
+      alert: {
+        state: false,
+        type: "error",
+        content: 'xd'
+      },
       titleRules: [
         v => !!v || 'Title is required'
       ],
@@ -61,13 +66,13 @@
       submit() {
         var that = this;
         if (this.$refs.form.validate()) {
-          axios.post('categories/add', {
+          axios.post('categories/addCategory', {
             NewTitle: this.title
           }).then(function (response) {
             if (response.data.successful) {
-              console.log(response.data);
+              that.alert = { state: true, type: "success", content: "You have successfully added category!" }
             } else
-              that.alert = true;
+              that.alert = { state: true, type: "error", content: "Something goes wrong! Try again" }
           });
         }
       },

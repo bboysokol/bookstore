@@ -63,7 +63,7 @@ namespace Bookstore.Controllers
         }
 
         // DELETE: api/Orders/5
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> DeleteOrder([FromRoute] int id)
         {
             try
@@ -73,6 +73,19 @@ namespace Bookstore.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in DeleteOrder()");
+                return Failure();
+            }
+        }
+        [HttpPost("{id}")]
+        public async Task<IActionResult> ChangeState([FromRoute] int id)
+        {
+            try
+            {
+                return await _orderService.ChangeState(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in ChangeState()");
                 return Failure();
             }
         }

@@ -21,7 +21,8 @@ namespace Bookstore.Services
         public async Task<IActionResult> GetOrders(int take, int skip)
         {
             var ordersQuery = _context.Orders
-                .Include(a => a.Client);
+                .Include(a => a.Client)
+                .Include(a => a.ShoppingCarts).ThenInclude(b=> b.Book);
 
             var orders = await ordersQuery
                 .Skip(skip)
@@ -40,19 +41,13 @@ namespace Bookstore.Services
                         ApartamentNumber = row.Client.ApartamentNumber,
                         HouseNumber = row.Client.HouseNumber
                     },
+                    IsDone = row.IsDone,
                     Date = row.Date,
                     Price = row.Price,
+                    ShoppingCarts = row.ShoppingCarts.Select(row2 => row2.Book).ToList()
                 }).ToListAsync();
 
             return Success(orders);
-        }
-
-        public async Task<IActionResult> EditPrice(int id, decimal price)
-        {
-            var book = _context.Books.FirstOrDefaultAsync(i => i.ISBN == id);
-            book.Result.Price = price;
-            await _context.SaveChangesAsync();
-            return Success();
         }
 
         public async Task<IActionResult> AddOrder(JObject order)
@@ -84,6 +79,13 @@ namespace Bookstore.Services
         {
             var order = await _context.Orders.FirstOrDefaultAsync(i => i.Id == id);
             _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+            return Success();
+        }
+        public async Task<IActionResult> ChangeState(int id)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(i => i.Id == id);
+            order.IsDone = !order.IsDone;
             await _context.SaveChangesAsync();
             return Success();
         }

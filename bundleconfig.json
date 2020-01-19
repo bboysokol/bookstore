@@ -1,0 +1,62 @@
+[
+  {
+    "outputFileName": "ClientApp/router/index.min.js",
+    "inputFiles": [
+      "ClientApp/router/index.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/router/routes.min.js",
+    "inputFiles": [
+      "ClientApp/router/routes.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/authentication.min.js",
+    "inputFiles": [
+      "ClientApp/services/authentication.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/authors.min.js",
+    "inputFiles": [
+      "ClientApp/services/authors.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/books.min.js",
+    "inputFiles": [
+      "ClientApp/services/books.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/categories.min.js",
+    "inputFiles": [
+      "ClientApp/services/categories.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/file-upload.min.js",
+    "inputFiles": [
+      "ClientApp/services/file-upload.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/orders.min.js",
+    "inputFiles": [
+      "ClientApp/services/orders.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/services/publishinghouses.min.js",
+    "inputFiles": [
+      "ClientApp/services/publishinghouses.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/Configuration.min.js",
+    "inputFiles": [
+      "ClientApp/Configuration.js"
+    ]
+  }
+]

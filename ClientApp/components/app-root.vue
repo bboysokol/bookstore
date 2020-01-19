@@ -46,4 +46,7 @@
   .offset-md-2 {
     margin-top: 78px;
   }
+  #app{
+    padding-bottom:100px;
+  }
 </style>

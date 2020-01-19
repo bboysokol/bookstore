@@ -61,8 +61,8 @@ namespace Bookstore.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeletePublishingHouse([FromBody] int id)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeletePublishingHouse([FromRoute] int id)
         {
             try
             {

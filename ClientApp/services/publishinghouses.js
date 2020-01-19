@@ -7,8 +7,8 @@ function getPublishingHouses() {
     })
 }
 
-function deletePublishingHouses(id) {
+function deletePublishingHouse(id) {
   return axios.post('publishinghouses/deletePublishingHouse/' + id)
     .then(response => { return response.data.payload })
 }
-export { getPublishingHouses, deletePublishingHouses };
+export { getPublishingHouses, deletePublishingHouse };

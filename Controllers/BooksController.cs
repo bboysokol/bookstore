@@ -46,8 +46,8 @@ namespace Bookstore.Controllers
         }
 
         // GET: api/Books/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBook([FromRoute] int id)
+        [HttpGet]
+        public async Task<IActionResult> GetBook(int id)
         {
             try
             {
@@ -56,21 +56,6 @@ namespace Bookstore.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in GetBook()");
-                return Failure();
-            }
-        }
-
-        // PUT: api/Books/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditPrice([FromRoute] int id, [FromBody] decimal price)
-        {
-            try
-            {
-                return await _bookService.EditPrice(id, price);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error in EditPrice()");
                 return Failure();
             }
         }
@@ -130,6 +115,22 @@ namespace Bookstore.Controllers
                 _logger.LogError(ex, "Error in AddTopBooks()");
                 return Failure();
             }
+        }
+
+        [HttpGet("{stringQuery}")]
+        public async Task<IActionResult> SearchBooks([FromRoute]string StringQuery)
+        {
+
+            try
+            {
+                return await _bookService.SearchBooks(StringQuery);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in SearchBooks()");
+                return Failure();
+            }
+
         }
     }
 }

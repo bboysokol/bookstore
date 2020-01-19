@@ -61,8 +61,8 @@ namespace Bookstore.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCategory([FromBody] int id)
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] int id)
         {
             try
             {

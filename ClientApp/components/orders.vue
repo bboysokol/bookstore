@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-toolbar flat color="red">
+      <v-toolbar flat color="#FFB300">
         <v-toolbar-title>Orders management</v-toolbar-title>
         <v-divider class="mx-2"
                    inset
@@ -14,8 +14,17 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td>{{ props.item.date }}</td>
+          <td>{{ props.item.client.name }} {{ props.item.client.surname }}</td>
+          <td>{{ props.item.client.street }} {{ props.item.client.houseNumber }}/{{ props.item.client.apartamentNumber }}<br /> {{ props.item.client.postCode }}</td>
+          <td><p v-for="item in props.item.shoppingCarts" :key="item.isbn"> {{item.title}}</p></td>
+          <td><v-checkbox v-model="props.item.isDone"  @change="changeState(props.item.id)"></v-checkbox>
+          </td>
+          <td class="justify-center">
+            <delete-alert @deleted="deleteItem(props.item.id)"></delete-alert>
+          </td>
         </template>
       </v-data-table>
+      <v-btn @click="loadMore">Load more</v-btn>
     </v-app>
   </div>
 
@@ -24,7 +33,8 @@
 
 <script>
   import axios from 'axios'
-
+  import { getOrders, deleteOrder, changeState } from '../services/orders'
+  import deleteAlert from '../components/delete-alert'
   export default {
     data: () => ({
       list: [],
@@ -36,22 +46,37 @@
           align: 'left',
           value: 'id'
         },
-        { text: 'Name', value: 'name' },
+        { text: 'Date', value: 'date' },
+        { text: 'Personalia', value: 'personalia' },
+        { text: 'Odbiór', value: 'odbior' },
+        { text: 'Produkt', value: 'produkt' },
+        { text: 'Zrealizowane', value: 'done' },
       ],
     }),
     created: function () {
-      var that = this;
-      
-      axios.get('orders/GetOrders' + '?take=' + that.take + '&skip=' + that.skip)
-          .then(function (response) {
-            that.skip += 10;
-            that.list = response.data.payload;
-          })
+      this.getBody();
+    },
+    components: {
+      'delete-alert': deleteAlert
     },
     methods: {
-      submit() {
-        
+      getBody() {
+        getOrders(this.take, this.skip).then(response => this.list = response);
+        this.skip += this.take;
       },
+      loadMore() {
+        getOrders(this.take, this.skip).then(response => this.list = this.list.concat(response));
+        this.skip += this.take;
+      },
+      changeState(id) {
+        changeState(id)
+
+      },
+      async deleteItem(id) {
+        await deleteOrder(id);
+        this.skip = 0;
+        this.getBody();
+      }
     }
   }
 </script>

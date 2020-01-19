@@ -5,7 +5,7 @@
     <v-btn slot="activator"
            color="black"
            class="modal-button"
-           outline>
+           dark>
       Add author
     </v-btn>
     <v-card class="dialog">

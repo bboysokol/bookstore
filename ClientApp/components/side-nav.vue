@@ -26,7 +26,7 @@
   .category_btn{
     min-width:90%;
   }
-  @media only screen and (max-width: 1269px){
+  @media only screen and (max-width: 1407.9px){
     .category_btn{
       min-width:0;
     }

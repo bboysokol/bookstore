@@ -1,8 +1,7 @@
 <template>
   <div>
     <slider></slider><br />
-    <top-books></top-books>
-     
+    <top-books></top-books>   
   </div>
   
 </template>

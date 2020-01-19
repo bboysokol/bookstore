@@ -16,7 +16,7 @@
           <td>{{ props.item.id }}</td>
           <td>{{ props.item.title }}</td>
           <td class="justify-center">
-            <delete-alert @deleted="deleteItem(props.item.isbn)"></delete-alert>
+            <delete-alert @deleted="deleteItem(props.item.id)"></delete-alert>
           </td>
         </template>
       </v-data-table>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import { getCategories, deleteCategory } from '../services/categories'
   import deleteAlert from '../components/delete-alert'
   import categoriesForm from '../components/category-form'
   export default {
@@ -43,22 +43,20 @@
       ],
     }),
     created: function () {
-      var that = this;
-      
-        axios.get('categories/GetCategories')
-          .then(function (response) {
-            console.log(response.data.payload);
-            that.list = response.data.payload;
-          })
+      this.getBody();
     },
     components: {
       'category-form': categoriesForm,
       'delete-alert': deleteAlert
     },
     methods: {
-      submit() {
-        
+      async deleteItem(id) {
+        await deleteCategory(id);
+        this.getBody();
       },
+      getBody() {
+        getCategories().then(response => this.list = response);
+      }
     }
   }
 </script>

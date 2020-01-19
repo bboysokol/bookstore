@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <v-toolbar color="pink"
-               dark>
+    <v-toolbar color="#FFB300">
       <v-toolbar-title>{{title}}</v-toolbar-title>
     </v-toolbar>
     <v-card>
@@ -9,7 +8,7 @@
                    grid-list-lg>
         <v-layout row wrap>
           <v-flex xs12 md6 v-for="book in books" :key="book.isbn">
-            <v-card color="cyan darken-2" class="white--text">
+            <v-card color="grey darken-3" class="white--text">
               <v-layout>
                 <v-flex xs5>
                   <v-img :src="$appPath +'/img/' + book.img"
@@ -30,12 +29,16 @@
               <v-card-actions class="pa-3">
                 ${{book.price}}
                 <v-spacer></v-spacer>
-                <v-btn @click="addBookToCart(book)">Add</v-btn>
+                <v-btn
+                       round
+                       outline
+                       color="#FFB300"
+                       @click="addBookToCart(book)">Add</v-btn>
               </v-card-actions>
             </v-card>
 
           </v-flex>
-          <v-btn round color="primary" @click="more" dark>Rounded Button</v-btn>
+          <v-btn round color="#FFB300" @click="more" dark>Load More</v-btn>
         </v-layout>
       </v-container>
     </v-card>
@@ -47,7 +50,6 @@
   import { mapActions, mapState } from 'vuex'
   import { getBooks } from '../services/books'
   import { addOrder } from '../services/orders'
-import { config } from '@fortawesome/fontawesome';
   export default {
     data() {
       return {
@@ -75,9 +77,6 @@ import { config } from '@fortawesome/fontawesome';
         getBooks(this.take, this.skip, this.$route.params.category).then(value => this.books = value);
         this.skip += this.take;
         console.log(this.books);
-      },
-      buy: function (bookId) {
-        addOrder(bookId, this.$cookies.get('UserCookie').id);
       },
       more: function () {
         getBooks(this.take, this.skip, this.$route.params.category).then(value => this.books = this.books.concat(value));

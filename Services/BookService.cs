@@ -91,7 +91,7 @@ namespace Bookstore.Services
                 Img = book.GetValue("img").Value<string>(),
             };
             if (_book.Img.Equals("")) _book.Img = "avatar_ac27_6d49";
-             var result = _context.Books.Add(_book);
+            var result = _context.Books.Add(_book);
             await _context.SaveChangesAsync();
 
             var result2 = await _context.Books.Where(i => i.Title == _book.Title).FirstOrDefaultAsync();
@@ -109,14 +109,14 @@ namespace Bookstore.Services
         public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Books.FirstOrDefaultAsync(i => i.ISBN == id);
-            _context.Books.Remove(book);
+            book.IsDeleted = true;
             await _context.SaveChangesAsync();
             return Success();
         }
         public async Task<IActionResult> GetTopBooks()
         {
 
-            var topBooks = _context.TopBooks.Select(i=>i.Book);
+            var topBooks = _context.TopBooks.Select(i => i.Book);
             var booksQuery = topBooks
                 .Include(a => a.BookAuthors).ThenInclude(a => a.Author)
                 .Include(a => a.Category)
@@ -156,6 +156,30 @@ namespace Bookstore.Services
             await _context.SaveChangesAsync();
             return Success();
         }
+        public async Task<IActionResult> SearchBooks(string StringQuery)
+        {
+            var booksQuery = _context.Books
+            .Include(a => a.BookAuthors).ThenInclude(a => a.Author)
+            .Include(a => a.Category)
+            .Include(a => a.PublishingHouse)
+            .Where(a => !a.IsDeleted);
 
+            var books = await booksQuery
+                .Where(x => EF.Functions.Like(x.Title, $"%{StringQuery}%"))
+                .Select(row => new BookVM()
+                {
+                    ISBN = row.ISBN,
+                    Title = row.Title,
+                    Category = row.Category,
+                    Price = row.Price,
+                    PublishmentYear = row.PublishmentYear,
+                    PublishingHouse = row.PublishingHouse,
+                    Img = row.Img,
+                    Authors = row.BookAuthors.Select(row2 => row2.Author).ToList()
+                }).ToListAsync();
+
+            return Success(books);
+
+        }
     }
 }

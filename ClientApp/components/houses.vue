@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-toolbar flat color="red">
+      <v-toolbar flat color="#FFB300">
         <v-toolbar-title>Publishing Houses management</v-toolbar-title>
         <v-divider class="mx-2"
                    inset
@@ -15,6 +15,9 @@
         <template v-slot:items="props">
           <td>{{ props.item.id }}</td>
           <td>{{ props.item.title }}</td>
+          <td class="justify-center">
+            <delete-alert @deleted="deleteItem(props.item.id)"></delete-alert>
+          </td>
         </template>
       </v-data-table>
     </v-app>
@@ -24,7 +27,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import { getPublishingHouses, deletePublishingHouse } from '../services/publishinghouses'
+  import deleteAlert from '../components/delete-alert'
   import publishForm from '../components/publishHouse-form'
   export default {
     data: () => ({
@@ -39,21 +43,20 @@
       ],
     }),
     created: function () {
-      var that = this;
-      
-      axios.get('publishinghouses/GetPublishingHouses')
-          .then(function (response) {
-            console.log(response.data.payload);
-            that.list = response.data.payload;
-          })
+      this.getBody();
     },
     methods: {
-      submit() {
-        
+      async deleteItem(id) {
+        await deletePublishingHouse(id);
+        this.getBody();
       },
+      getBody() {
+        getPublishingHouses().then(response => this.list = response);
+      }
     },
     components: {
       'publish-form': publishForm,
+      'delete-alert': deleteAlert
     }
   }
 </script>

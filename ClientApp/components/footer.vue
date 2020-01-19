@@ -2,11 +2,12 @@
   <div id="app">
 
       <v-footer dark
+                fixed
                 height="auto">
         <v-card class="flex"
                 flat
                 tile>
-          <v-card-title class="teal">
+          <v-card-title class="grey darken-1">
             <strong class="subheading">{{day}}</strong>
 
             <v-spacer></v-spacer>
@@ -20,7 +21,7 @@
             </v-btn>
           </v-card-title>
 
-          <v-card-actions class="grey darken-3 justify-center">
+          <v-card-actions class="grey darken-4 justify-center">
             &copy;2019 — <strong>Bookstore</strong>
           </v-card-actions>
         </v-card>

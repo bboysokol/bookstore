@@ -15,10 +15,14 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Providers\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bundleconfig.json" />
     <None Include="C:\Users\Natka i Pciemo\Desktop\classDiagram.cd" Link="classDiagram.cd" />
   </ItemGroup>
 

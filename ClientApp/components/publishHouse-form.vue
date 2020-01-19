@@ -3,34 +3,42 @@
             dark
             v-model="dialog">
     <v-btn slot="activator"
-           color="#FFB300"
+           color="black"
            class="modal-button"
-           outline
-           round>
+           dark>
       Add house
     </v-btn>
     <v-card class="dialog">
       <v-form ref="form"
               v-model="valid"
               lazy-validation>
-        <v-alert :value="alert"
-                 type="error"
+        <v-card-title class="headline amber darken-1"
+                      primary-title>
+          New publishing house
+          <v-spacer></v-spacer>
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-alert :value="alert.state"
+                 :type="alert.type"
                  transition="scale-transition">
-          "Username or password is incorrect"
+          {{alert.content}}
         </v-alert>
-        <v-label>Add new author</v-label><br />
-        <v-text-field v-model="title"
-                      :rules="titleRules"
-                      label="Title"
-                      required
-                      color="#12d483"
-                      prepend-inner-icon="person"
-                      outline>
-        </v-text-field>
-        <v-btn @click="submit"
-               color="#12d483"
-               outline
-               round>Add Category</v-btn><br />
+        <v-card-text class="dialog-card">
+          <v-text-field v-model="title"
+                        :rules="titleRules"
+                        label="Title"
+                        required
+                        color="#FFB300"
+                        prepend-inner-icon="person"
+                        outline>
+          </v-text-field>
+          <v-btn @click="submit"
+                 color="#FFB300"
+                 outline
+                 round>Add Category</v-btn>
+          </v-card-text>
       </v-form>
     </v-card>
   </v-dialog>
@@ -43,6 +51,7 @@
     data: () => ({
       valid: true,
       alert: false,
+      dialog: false,
       title: '',
       titleRules: [
         v => !!v || 'Title is required'
@@ -52,13 +61,13 @@
       submit() {
         var that = this;
         if (this.$refs.form.validate()) {
-          axios.post('publishinghouses/add', {
+          axios.post('publishinghouses/addpublishinghouse', {
             NewTitle: this.title
           }).then(function (response) {
             if (response.data.successful) {
-              console.log(response.data);
+              that.alert = { state: true, type: "success", content: "You have successfully added publishing house!" }
             } else
-              that.alert = true;
+              that.alert = { state: true, type: "error", content: "Something goes wrong! Try again" }
           });
         }
       },

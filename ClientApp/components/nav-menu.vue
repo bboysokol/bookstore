@@ -16,7 +16,7 @@
                      :to="'/cart'">
           <v-badge bottom
                    overlap
-                   color="#12d483">
+                   color="#FFB300">
             <span slot="badge">
               {{currentCart.length}}
             </span>
@@ -135,7 +135,7 @@
   .active {
     text-decoration: none;
     border-bottom: 4px solid;
-    border-color: #12d483;
+    border-color: #FFB300;
   }
 
   .v-toolbar__side-icon {

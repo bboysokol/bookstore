@@ -1,15 +1,14 @@
 <template>
   <div id="app">
       <v-card>
-        <v-toolbar color="pink"
-                   dark>
+        <v-toolbar color="#FFB300">
           <v-toolbar-title>Top 4 books</v-toolbar-title>
         </v-toolbar>
           <v-container fluid
                        grid-list-lg>
             <v-layout row wrap>
               <v-flex xs12 md6 v-for="book in books" :key="book.isbn">
-                <v-card color="cyan darken-2" class="white--text">
+                <v-card color="grey darken-3" class="white--text">
                   <v-layout>
                     <v-flex xs5>
                       <v-img :src="$appPath +'/img/' + book.img"
@@ -30,7 +29,11 @@
                   <v-card-actions class="pa-3">
                     ${{book.price}}
                     <v-spacer></v-spacer>
-                    <v-btn @click="addBookToCart(book)">Add</v-btn>
+                    <v-btn
+                           round
+                           outline
+                           color="#FFB300"
+                           @click="addBookToCart(book)">Add</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>

@@ -16,14 +16,10 @@
         <tbody>
           <tr v-for="item in resources">
             <td class="search-item">
-              <v-avatar>
-                <v-img :src="$appPath +'/img/' + item.avatarUrl"
-                       alt="avatar" />
-              </v-avatar>
               <router-link
                         style="padding-left:20px;"
-                        :to="'/user/' + item.id">
-                {{item.author}}
+                        :to="'/book/' + item.isbn">
+                {{item.title}}
               </router-link>
             </td>
           </tr>
@@ -47,7 +43,7 @@
       searchQuery(after, before) {
         var that = this
         if (this.searchQuery) {
-          axios.get('books/searchusers/' + this.searchQuery)
+          axios.get('books/searchbooks/' + this.searchQuery)
             .then(function (data) {
               that.resources = data.data.payload;
             })

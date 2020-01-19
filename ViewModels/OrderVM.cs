@@ -14,7 +14,7 @@ namespace Bookstore.Models
         public ClientVM Client { get; set; }
         public string Date { get; set; }
         public bool IsDone { get; set; }
-        public ICollection<ShoppingCart> ShoppingCarts { get; set; }
+        public ICollection<Book> ShoppingCarts { get; set; }
         public decimal Price { get; set; }
     }
 }
